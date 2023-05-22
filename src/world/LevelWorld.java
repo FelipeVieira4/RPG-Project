@@ -5,17 +5,20 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.awt.Rectangle;
 
 import javax.imageio.ImageIO;
 
 import game.GameComponent;
 
 public class LevelWorld {
-	private ArrayList<Rectangle> Blocks = new ArrayList<Rectangle>();
+	
+	public static final int tileFree=-16777216;//Color id for tile id
+	
+	private ArrayList<Vector2D> PointBlocks = new ArrayList<Vector2D>();
+	private ArrayList<Object> Itens = new ArrayList<Object>();
+	
 	private BufferedImage tileSheet;
 	private BufferedImage levelImage;
-	
 	
 	public LevelWorld() {
 		try {
@@ -27,11 +30,13 @@ public class LevelWorld {
 			System.exit(1);
 		}
 		
+		//System.out.println(levelImage.getRGB(1, 1));//Print the id of tile free
+		
 		for(byte x=0;x<levelImage.getWidth();x++){
 			for(byte y=0;y<levelImage.getHeight();y++){
 				
-				if(levelImage.getRGB(x, y)==-1) {
-					Blocks.add(new Rectangle(x*GameComponent.tileSize,y*GameComponent.tileSize,GameComponent.tileSize,GameComponent.tileSize));
+				if(levelImage.getRGB(x, y)!=tileFree) {
+					PointBlocks.add(new Vector2D(x*GameComponent.tileSize,y*GameComponent.tileSize));
 				}
 			}
 		}
@@ -39,16 +44,11 @@ public class LevelWorld {
 	}
 	
 	public void draw(Graphics g1) {
-		for(Rectangle blockTile:Blocks) {
-			g1.drawImage(tileSheet, blockTile.x, blockTile.y,
-					blockTile.x+GameComponent.tileSize, blockTile.y+GameComponent.tileSize,
+		for(Vector2D blockTile:PointBlocks) {
+			g1.drawImage(tileSheet, blockTile.getX(), blockTile.getY(),
+					blockTile.getX()+GameComponent.tileSize, blockTile.getY()+GameComponent.tileSize,
 					0, 0, 15,15, null);
 		}
-	}
-	
-	public boolean checkBlockCollision(int player_x,int player_y,int xChunk,int yChunk) {
-		
-		return true;
 	}
 	
 	public BufferedImage getLevelImage() {

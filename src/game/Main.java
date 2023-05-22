@@ -13,6 +13,8 @@ public class Main extends JFrame{
 		this.setLocation(300,100);
 		
 		this.add(new GameComponent());
+		
+		
 		this.setVisible(true);
 	}
 	

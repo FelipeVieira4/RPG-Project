@@ -5,6 +5,6 @@
  * @author felipe
  *
  */
-module clone_zelda {
+module Simple_ZeldaClone {
 	requires java.desktop;
 }

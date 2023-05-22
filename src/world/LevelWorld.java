@@ -12,7 +12,7 @@ import game.GameComponent;
 
 public class LevelWorld {
 	
-	public static final int tileFree=-16777216;//Color id for tile id
+	public static final int tileFree=-16777216;//Color id for tile free
 	
 	private ArrayList<Vector2D> PointBlocks = new ArrayList<Vector2D>();
 	private ArrayList<Object> Itens = new ArrayList<Object>();

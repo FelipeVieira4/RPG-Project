@@ -13,7 +13,7 @@ public class GameComponent extends JPanel implements Runnable{
 	public static final int screenROW=24;	//Number of Rows on screen
 	public static final int tileSize=32;		//Size of tiles
 	
-	private boolean debugMode=true;
+	private boolean debugMode=false;
 		
 	private static final long serialVersionUID = 1L;
 	private Thread gameThread;

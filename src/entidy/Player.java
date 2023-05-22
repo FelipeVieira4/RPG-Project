@@ -50,13 +50,14 @@ public class Player extends Entidy implements KeyListener{
 		//Draw the lifes icon on screen
 		for(int i=0;i<lifes;i++) {
 
-			g.drawImage(healthIcon,(i*healthIcon.getWidth())+(10*i), 10, ((i*healthIcon.getWidth())+(10*i))+healthIcon.getWidth()*2, 10+healthIcon.getHeight()*2,
+			g.drawImage(healthIcon,(i*healthIcon.getWidth())+(10*i), 450, ((i*healthIcon.getWidth())+(10*i))+healthIcon.getWidth()*2, 450+healthIcon.getHeight()*2,
 									0, 0, healthIcon.getWidth(), healthIcon.getHeight(), null);
 		}
 		
-		
+		/*
 		g.setColor(Color.RED);
 		g.drawRect(this.getX(), this.getY(), GameComponent.tileSize, GameComponent.tileSize);
+		*/
 	}
 	
 	public void update(LevelWorld map) {

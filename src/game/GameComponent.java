@@ -72,8 +72,5 @@ public class GameComponent extends JPanel implements Runnable{
 		
 		
 	}
-	public void closeThread() {
-		Thread.currentThread().interrupt();
-	}
 	
 }

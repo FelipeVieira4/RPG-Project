@@ -34,6 +34,7 @@ public class GameComponent extends JPanel implements Runnable{
 		
 		gameThread=new Thread(this);
 		gameThread.start();
+		
 	}
 
 	//Função Paint do JPanel responsavel pela parte grafica do jogo
@@ -69,5 +70,10 @@ public class GameComponent extends JPanel implements Runnable{
 			}
 		}
 		
+		
 	}
+	public void closeThread() {
+		Thread.currentThread().interrupt();
+	}
+	
 }

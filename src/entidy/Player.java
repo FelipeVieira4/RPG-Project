@@ -76,25 +76,15 @@ public class Player extends Entidy implements KeyListener{
 		
 		
 	}
-
 	
 	private boolean movement(LevelWorld map) {
 				
 		int buffX=this.getX(),buffY=this.getY();
 		
-		if(up && !collisionChunk.hasCollision(this.getX(), this.getY()-speed)) {
-			this.addForceY(-speed);
-		}
-		else if(down && !collisionChunk.hasCollision(this.getX(), this.getY()+speed)) {
-			this.addForceY(speed);
-		}
-		
-		if(left && !collisionChunk.hasCollision(this.getX()-5,this.getY())) {
-			this.addForceX(-speed);
-		}
-		else if(right && !collisionChunk.hasCollision(this.getX()+speed,this.getY())) {
-			this.addForceX(speed);
-		}
+		this.addForceY(up && !collisionChunk.hasCollision(this.getX(), this.getY()-speed)?-1*this.speed:0);
+		this.addForceY(down && !collisionChunk.hasCollision(this.getX(), this.getY()+speed)?1*this.speed:0);
+		this.addForceX(left && !collisionChunk.hasCollision(this.getX()-speed,this.getY())?-1*this.speed:0);
+		this.addForceX(right && !collisionChunk.hasCollision(this.getX()+speed,this.getY())?1*this.speed:0);
 		
 		if(buffX!=this.getX() || buffY!=this.getY())return true;
 		

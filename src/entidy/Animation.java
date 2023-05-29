@@ -8,8 +8,5 @@ public class Animation {
 	byte frames;
 	byte x,y;
 	
-	public BufferedImage getText() {
-		
-	}
 	
 }

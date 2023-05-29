@@ -1,5 +1,6 @@
 package entidy;
 
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
@@ -26,10 +27,13 @@ public class Player extends Entidy implements KeyListener{
 	private byte lifes=5;		//health of player
 	
 	private ChunkCollision collisionChunk = new ChunkCollision();
-	
+		
 	//movement variables
 	private boolean left,right,up,down;
+	private String namePlayer;
 	
+	String dir="UP";
+	int frames=0;
 	
 	public Player(byte x,byte y) {
 		
@@ -37,7 +41,7 @@ public class Player extends Entidy implements KeyListener{
 		
 		try {
 			linkSheet=ImageIO.read(new File("rsc/link_sheet.png"));
-			linkTexture=linkSheet.getSubimage(1, 1, 15, 16);
+			linkTexture=linkSheet.getSubimage(0, 16, 15, 16);
 			healthIcon=ImageIO.read(new File("rsc/health_icon.png"));
 		}catch(Exception io) {
 			JOptionPane.showMessageDialog(null,"ERRO TO LOAD SOME SPRITE FROM PLAYER SYSTEM","ERRO 0x01",JOptionPane.CLOSED_OPTION);
@@ -45,7 +49,11 @@ public class Player extends Entidy implements KeyListener{
 		}
 	}
 	public void draw(Graphics g) {
-		g.drawImage(linkTexture, this.getX(), this.getY(),this.getX()+GameComponent.tileSize, this.getY()+GameComponent.tileSize, 0, 0, linkTexture.getWidth(), linkTexture.getHeight(), null);
+		
+		
+		
+		g.drawImage(linkTexture, this.getX(), this.getY(),this.getX()+GameComponent.tileSize, this.getY()+GameComponent.tileSize,
+				dir=="LEFT"? linkTexture.getWidth(): 0, 0,dir=="LEFT"? 0 : linkTexture.getWidth(), linkTexture.getHeight(), null);
 		
 		//Draw the lifes icon on screen
 		for(int i=0;i<lifes;i++) {
@@ -54,6 +62,9 @@ public class Player extends Entidy implements KeyListener{
 									0, 0, healthIcon.getWidth(), healthIcon.getHeight(), null);
 		}
 		
+		/*Draw the name of Player*/
+		g.setColor(Color.RED);
+		g.drawString("TOM",this.getX(),this.getY());
 		/*
 		g.setColor(Color.RED);
 		g.drawRect(this.getX(), this.getY(), GameComponent.tileSize, GameComponent.tileSize);
@@ -72,6 +83,19 @@ public class Player extends Entidy implements KeyListener{
 			
 			//if charged the positions of collisionChunk,update the collisionChunk
 			if(xChunk!=oldxChunk || yChunk!=oldyChunk)collisionChunk.getChunk(xChunk, yChunk, map);
+			
+			
+			switch (this.dir) {
+				case "UP": 
+					linkTexture=linkSheet.getSubimage(0, 32, 15, 16);
+					break;
+				case "LEFT": case "RIGHT": 
+					linkTexture=linkSheet.getSubimage(0, 16, 15, 16);
+					break;
+				case "DOWN": 
+					linkTexture=linkSheet.getSubimage(0, 0, 15, 16);
+					break;
+			}
 		}
 		
 		
@@ -81,11 +105,23 @@ public class Player extends Entidy implements KeyListener{
 				
 		int buffX=this.getX(),buffY=this.getY();
 		
-		this.addForceY(up && !collisionChunk.hasCollision(this.getX(), this.getY()-speed)?-1*this.speed:0);
-		this.addForceY(down && !collisionChunk.hasCollision(this.getX(), this.getY()+speed)?1*this.speed:0);
-		this.addForceX(left && !collisionChunk.hasCollision(this.getX()-speed,this.getY())?-1*this.speed:0);
-		this.addForceX(right && !collisionChunk.hasCollision(this.getX()+speed,this.getY())?1*this.speed:0);
+		if(up && !collisionChunk.hasCollision(this.getX(), this.getY()-speed)) {
+			this.addForceY(-speed);
+			dir="UP";
+		}else if(down && !collisionChunk.hasCollision(this.getX(), this.getY()+speed)) {
+			this.addForceY(speed);
+			dir="DOWN";
+		}
 		
+		
+		if(left && !collisionChunk.hasCollision(this.getX()-speed,this.getY())) {
+			this.addForceX(-speed);
+			dir="LEFT";
+		}else if(right && !collisionChunk.hasCollision(this.getX()+speed,this.getY())) {
+			this.addForceX(speed);
+			dir="RIGHT";
+		}
+
 		if(buffX!=this.getX() || buffY!=this.getY())return true;
 		
 		return false;

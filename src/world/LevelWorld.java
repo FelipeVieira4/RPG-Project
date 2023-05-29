@@ -31,6 +31,7 @@ public class LevelWorld {
 		}
 		
 		//System.out.println(levelImage.getRGB(1, 1));//Print the id of tile free
+		levelImage.setRGB(0, 2, -1);
 		
 		for(byte x=0;x<levelImage.getWidth();x++){
 			for(byte y=0;y<levelImage.getHeight();y++){
@@ -40,6 +41,7 @@ public class LevelWorld {
 				}
 			}
 		}
+		
 		
 	}
 	

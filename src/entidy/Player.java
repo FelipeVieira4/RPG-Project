@@ -32,8 +32,8 @@ public class Player extends Entidy implements KeyListener{
 	private boolean left,right,up,down;
 	private String namePlayer;
 	
-	String dir="UP";
-	int frames=0;
+	private String dir="UP";
+	private int frames=0;
 	
 	public Player(byte x,byte y) {
 		
@@ -62,13 +62,6 @@ public class Player extends Entidy implements KeyListener{
 									0, 0, healthIcon.getWidth(), healthIcon.getHeight(), null);
 		}
 		
-		/*Draw the name of Player*/
-		g.setColor(Color.RED);
-		g.drawString("TOM",this.getX(),this.getY());
-		/*
-		g.setColor(Color.RED);
-		g.drawRect(this.getX(), this.getY(), GameComponent.tileSize, GameComponent.tileSize);
-		*/
 	}
 	
 	public void update(LevelWorld map) {

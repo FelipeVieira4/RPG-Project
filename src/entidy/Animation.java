@@ -1,12 +1,15 @@
 package entidy;
 
-import java.awt.image.BufferedImage;
-import game.GameComponent;
 
-public class Animation {
+public class Animation{
+
+	int posFrameX,posFrameY;
+	int frameNumber;
 	
-	byte frames;
-	byte x,y;
-	
-	
+	public Animation(int x,int y,int num) {
+		this.posFrameX=x;
+		this.posFrameY=y;
+		this.frameNumber=num;
+	}
+
 }

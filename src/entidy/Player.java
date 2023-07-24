@@ -10,8 +10,8 @@ import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
-import Animation.Animation;
-import Animation.AnimationStage;
+import animation.Animation;
+import animation.AnimationStage;
 import game.GameComponent;
 import world.ChunkCollision;
 import world.LevelWorld;
@@ -95,9 +95,7 @@ public class Player extends Entidy implements KeyListener{
 						break;
 					case "DOWN": 
 						AnimationPlayer.setAnimation("WalkDOWN");
-						break;
-					default:
-						
+						break;						
 				}	
 			}
 			AnimationPlayer.nextFrame();
@@ -115,7 +113,8 @@ public class Player extends Entidy implements KeyListener{
 		if(up && !collisionChunk.hasCollision(this.getX(), this.getY()-speed)) {
 			this.addForceY(-speed);
 			dir="UP";
-		}else if(down && !collisionChunk.hasCollision(this.getX(), this.getY()+speed)) {
+		}
+		if(down && !collisionChunk.hasCollision(this.getX(), this.getY()+speed)) {
 			this.addForceY(speed);
 			dir="DOWN";
 		}
@@ -124,7 +123,8 @@ public class Player extends Entidy implements KeyListener{
 		if(left && !collisionChunk.hasCollision(this.getX()-speed,this.getY())) {
 			this.addForceX(-speed);
 			dir="LEFT";
-		}else if(right && !collisionChunk.hasCollision(this.getX()+speed,this.getY())) {
+		}
+		if(right && !collisionChunk.hasCollision(this.getX()+speed,this.getY())) {
 			this.addForceX(speed);
 			dir="RIGHT";
 		}

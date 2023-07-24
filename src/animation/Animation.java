@@ -1,4 +1,4 @@
-package Animation;
+package animation;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

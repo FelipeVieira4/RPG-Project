@@ -1,4 +1,4 @@
-package Animation;
+package animation;
 
 public class AnimationStage {
 	private int startFrame,endFrame,posSheet;

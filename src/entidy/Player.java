@@ -10,6 +10,8 @@ import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
+import Animation.Animation;
+import Animation.AnimationStage;
 import game.GameComponent;
 import world.ChunkCollision;
 import world.LevelWorld;
@@ -17,7 +19,6 @@ import world.Vector2D;
 
 public class Player extends Entidy implements KeyListener{
 	
-	private BufferedImage linkSheet;		//Tile of player
 	private BufferedImage healthIcon;	//I need move it to another file
 	private BufferedImage linkTexture;	//The texture of player that will be drawed
 	
@@ -29,18 +30,25 @@ public class Player extends Entidy implements KeyListener{
 		
 	//movement variables
 	private boolean left,right,up,down;
-	private String namePlayer;
+	
 	
 	private String dir="UP";
-	private int frames=0;
+	private String oldDir = dir;
+	
+	private Animation AnimationPlayer = null; 
 	
 	public Player(byte x,byte y) {
-		
 		super(x, y);
 		
+		AnimationPlayer = new Animation("rsc/link_sheet.png");
+		AnimationPlayer.addAnimation("WalkUP",new AnimationStage(0, 1, 2));
+		AnimationPlayer.addAnimation("WalkHorizontal",new AnimationStage(0, 1, 1));
+		AnimationPlayer.addAnimation("WalkDOWN",new AnimationStage(0, 1, 0));
+		AnimationPlayer.setAnimation("WalkDOWN");
+
+		linkTexture=AnimationPlayer.getImage();
+		
 		try {
-			linkSheet=ImageIO.read(new File("rsc/link_sheet.png"));
-			linkTexture=linkSheet.getSubimage(0, 16, 15, 16);
 			healthIcon=ImageIO.read(new File("rsc/health_icon.png"));
 		}catch(Exception io) {
 			JOptionPane.showMessageDialog(null,"ERRO TO LOAD SOME SPRITE FROM PLAYER SYSTEM","ERRO 0x01",JOptionPane.CLOSED_OPTION);
@@ -49,16 +57,17 @@ public class Player extends Entidy implements KeyListener{
 	}
 	public void draw(Graphics g) {
 		
-		
-		
-		g.drawImage(linkTexture, this.getX(), this.getY(),this.getX()+GameComponent.tileSize, this.getY()+GameComponent.tileSize,
-				dir=="LEFT"? linkTexture.getWidth(): 0, 0,dir=="LEFT"? 0 : linkTexture.getWidth(), linkTexture.getHeight(), null);
+		//Invert the image of player if dir is left
+		if(dir=="LEFT") {
+			g.drawImage(linkTexture, this.getX(), this.getY(),this.getX()+GameComponent.tileSize, this.getY()+GameComponent.tileSize,linkTexture.getWidth(), 0,0, linkTexture.getHeight(), null);
+		}else {
+			g.drawImage(linkTexture, this.getX(), this.getY(),this.getX()+GameComponent.tileSize, this.getY()+GameComponent.tileSize,0, 0,linkTexture.getWidth(), linkTexture.getHeight(), null);
+		}
 		
 		//Draw the lifes icon on screen
 		for(int i=0;i<lifes;i++) {
 
-			g.drawImage(healthIcon,(i*healthIcon.getWidth())+(10*i), 450, ((i*healthIcon.getWidth())+(10*i))+healthIcon.getWidth()*2, 450+healthIcon.getHeight()*2,
-									0, 0, healthIcon.getWidth(), healthIcon.getHeight(), null);
+			g.drawImage(healthIcon,(i*healthIcon.getWidth())+(10*i), 450, ((i*healthIcon.getWidth())+(10*i))+healthIcon.getWidth()*2, 450+healthIcon.getHeight()*2,0, 0, healthIcon.getWidth(), healthIcon.getHeight(), null);
 		}
 		
 	}
@@ -76,25 +85,31 @@ public class Player extends Entidy implements KeyListener{
 			//if charged the positions of collisionChunk,update the collisionChunk
 			if(xChunk!=oldxChunk || yChunk!=oldyChunk)collisionChunk.getChunk(xChunk, yChunk, map);
 			
-			
-			switch (this.dir) {
-				case "UP": 
-					linkTexture=linkSheet.getSubimage(0, 32, 15, 16);
-					break;
-				case "LEFT": case "RIGHT": 
-					linkTexture=linkSheet.getSubimage(0, 16, 15, 16);
-					break;
-				case "DOWN": 
-					linkTexture=linkSheet.getSubimage(0, 0, 15, 16);
-					break;
+			if(oldDir != dir) {
+				switch (this.dir) {
+					case "UP": 
+						AnimationPlayer.setAnimation("WalkUP");
+						break;
+					case "LEFT": case "RIGHT": 
+						AnimationPlayer.setAnimation("WalkHorizontal");
+						break;
+					case "DOWN": 
+						AnimationPlayer.setAnimation("WalkDOWN");
+						break;
+					default:
+						
+				}	
 			}
+			AnimationPlayer.nextFrame();
+			linkTexture=AnimationPlayer.getImage();
 		}
 		
 		
 	}
 	
 	private boolean movement(LevelWorld map) {
-				
+		
+		oldDir = dir;
 		int buffX=this.getX(),buffY=this.getY();
 		
 		if(up && !collisionChunk.hasCollision(this.getX(), this.getY()-speed)) {
@@ -155,13 +170,13 @@ public class Player extends Entidy implements KeyListener{
 		}
 	}
 
-	public ChunkCollision getChunk() {
-		return this.collisionChunk;
-	}
-
 	public void keyTyped(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public ChunkCollision getChunk() {
+		return this.collisionChunk;
 	}
 	
 	public Vector2D getChunkAsPoint() {

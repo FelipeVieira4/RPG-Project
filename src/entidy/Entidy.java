@@ -6,8 +6,9 @@ import game.GameComponent;
 
 public class Entidy {
 	private int x,y;
+
 	
-	public Entidy(byte posx,byte posy) {
+	public Entidy( int posx, int posy) {
 		this.x=posx*GameComponent.tileSize;
 		this.y=posy*GameComponent.tileSize;
 	}

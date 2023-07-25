@@ -1,4 +1,4 @@
-package entidy;
+package player;
 
 
 import java.awt.Graphics;
@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 
 import animation.Animation;
 import animation.AnimationStage;
+import entidy.Entidy;
 import game.GameComponent;
 import world.ChunkCollision;
 import world.LevelWorld;
@@ -23,29 +24,32 @@ public class Player extends Entidy implements KeyListener{
 	private BufferedImage linkTexture;	//The texture of player that will be drawed
 	
 	private byte speed=4;		//variable of velocity
-	private int xChunk,yChunk;	//Position of player on the chuck
-	private byte lifes=5;		//health of player
+	private int xChunk,yChunk;	//Position of player on the chunk
+	private byte lifes=3;		//health of player
 	
-	private ChunkCollision collisionChunk = new ChunkCollision();
+	private ChunkCollision collisionChunkMap = new ChunkCollision();
 		
 	//movement variables
 	private boolean left,right,up,down;
 	
 	
-	private String dir="UP";
-	private String oldDir = dir;
+	private String dir="UP",oldDir = dir;
+	private PlayerState state = PlayerState.walk;
 	
 	private Animation AnimationPlayer = null; 
 	
-	public Player(byte x,byte y) {
+	public Player(int x,int y) {
 		super(x, y);
 		
-		AnimationPlayer = new Animation("rsc/link_sheet.png");
-		AnimationPlayer.addAnimation("WalkUP",new AnimationStage(0, 1, 2));
-		AnimationPlayer.addAnimation("WalkHorizontal",new AnimationStage(0, 1, 1));
+		AnimationPlayer = new Animation("rsc/link_sheet.png",15,16);
+		
 		AnimationPlayer.addAnimation("WalkDOWN",new AnimationStage(0, 1, 0));
+		AnimationPlayer.addAnimation("WalkHorizontal",new AnimationStage(0, 1, 1));
+		AnimationPlayer.addAnimation("WalkUP",new AnimationStage(0, 1, 2));
+		AnimationPlayer.addAnimation("Attack",new AnimationStage(0, 1, 3));
+		
 		AnimationPlayer.setAnimation("WalkDOWN");
-
+		
 		linkTexture=AnimationPlayer.getImage();
 		
 		try {
@@ -83,7 +87,8 @@ public class Player extends Entidy implements KeyListener{
 			yChunk=Math.round((this.getY()+(GameComponent.tileSize/2))/GameComponent.tileSize);
 			
 			//if charged the positions of collisionChunk,update the collisionChunk
-			if(xChunk!=oldxChunk || yChunk!=oldyChunk)collisionChunk.getChunk(xChunk, yChunk, map);
+			if(xChunk!=oldxChunk || yChunk!=oldyChunk)collisionChunkMap.getChunk(xChunk, yChunk, map);
+			
 			
 			if(oldDir != dir) {
 				switch (this.dir) {
@@ -95,41 +100,60 @@ public class Player extends Entidy implements KeyListener{
 						break;
 					case "DOWN": 
 						AnimationPlayer.setAnimation("WalkDOWN");
-						break;						
+						break;
 				}	
+				//System.out.println("Animation State:"+AnimationPlayer.getState());
+				//System.out.println("Player State:"+state);
 			}
-			AnimationPlayer.nextFrame();
-			linkTexture=AnimationPlayer.getImage();
+			AnimationPlayer.TimerFrame(this.speed);
+		}
+		else if(state == PlayerState.attack) {
+			AnimationPlayer.setAnimation("Attack");
+			
+			state=PlayerState.walk;
+			//System.out.println("Animation State:"+AnimationPlayer.getState());
+			//System.out.println("Player State:"+state);
+		}
+		else {
+			return;
 		}
 		
+		
+		
+		linkTexture=AnimationPlayer.getImage();
 		
 	}
 	
 	private boolean movement(LevelWorld map) {
 		
-		oldDir = dir;
 		int buffX=this.getX(),buffY=this.getY();
+		oldDir = dir;
 		
-		if(up && !collisionChunk.hasCollision(this.getX(), this.getY()-speed)) {
-			this.addForceY(-speed);
-			dir="UP";
-		}
-		if(down && !collisionChunk.hasCollision(this.getX(), this.getY()+speed)) {
-			this.addForceY(speed);
-			dir="DOWN";
+		if(state == PlayerState.walk) {
+			if(up && !collisionChunkMap.hasCollision(this.getX(), this.getY()-speed)) {
+				this.addForceY(-speed);
+				dir="UP";
+			}
+			if(down && !collisionChunkMap.hasCollision(this.getX(), this.getY()+speed)) {
+				this.addForceY(speed);
+				dir="DOWN";
+			}
+			
+			
+			if(left && !collisionChunkMap.hasCollision(this.getX()-speed,this.getY())) {
+				this.addForceX(-speed);
+				dir="LEFT";
+			}
+			if(right && !collisionChunkMap.hasCollision(this.getX()+speed,this.getY())) {
+				this.addForceX(speed);
+				dir="RIGHT";
+			}
+			
+			if(buffX!=this.getX() || buffY!=this.getY()) {
+				return true;
+			}
 		}
 		
-		
-		if(left && !collisionChunk.hasCollision(this.getX()-speed,this.getY())) {
-			this.addForceX(-speed);
-			dir="LEFT";
-		}
-		if(right && !collisionChunk.hasCollision(this.getX()+speed,this.getY())) {
-			this.addForceX(speed);
-			dir="RIGHT";
-		}
-
-		if(buffX!=this.getX() || buffY!=this.getY())return true;
 		
 		return false;
 	}
@@ -167,6 +191,9 @@ public class Player extends Entidy implements KeyListener{
 			case KeyEvent.VK_DOWN:
 				down=false;
 				break;
+			case KeyEvent.VK_C:
+				state=PlayerState.attack;
+				break;
 		}
 	}
 
@@ -175,8 +202,12 @@ public class Player extends Entidy implements KeyListener{
 		
 	}
 	
+	public void addLife() {
+		if(this.lifes < 6)this.lifes++;
+	}
+	
 	public ChunkCollision getChunk() {
-		return this.collisionChunk;
+		return this.collisionChunkMap;
 	}
 	
 	public Vector2D getChunkAsPoint() {

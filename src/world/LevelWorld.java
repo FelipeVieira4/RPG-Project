@@ -9,18 +9,24 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 import game.GameComponent;
+import item.HealthITem;
+import item.Item;
+import player.Player;
 
 public class LevelWorld {
 	
 	public static final int tileFree=-16777216;//Color id for tile free
 	
 	private ArrayList<Vector2D> PointBlocks = new ArrayList<Vector2D>();
-	private ArrayList<Object> Itens = new ArrayList<Object>();
+	private ArrayList<Item> Items = new ArrayList<Item>();
 	
 	private BufferedImage tileSheet;
 	private BufferedImage levelImage;
 	
 	public LevelWorld() {
+		
+		Items.add(new HealthITem((byte)2,(byte)2));
+		
 		try {
 			tileSheet = ImageIO.read(new File("rsc/tileSheet.png"));
 			levelImage = ImageIO.read(new File("rsc/level1_1.bmp"));
@@ -51,6 +57,27 @@ public class LevelWorld {
 					blockTile.getX()+GameComponent.tileSize, blockTile.getY()+GameComponent.tileSize,
 					0, 0, 15,15, null);
 		}
+		
+		for(Item i: Items) {
+			i.draw(g1);
+		}
+	}
+	
+	public void update(Player p) {
+		
+		for(int i=Items.size()-1 ; i>=0; i--) {
+			
+			Item item = Items.get(i);
+			
+			if(item instanceof HealthITem){
+				if(((HealthITem) item).update(p)) {
+					Items.remove(i);
+				}
+				
+				
+			}
+		}
+			
 	}
 	
 	public BufferedImage getLevelImage() {

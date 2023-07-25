@@ -3,15 +3,18 @@ package game;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Toolkit;
-import entidy.Player;
+
 import world.LevelWorld;
 import javax.swing.JPanel;
+
+import player.Player;
 
 public class GameComponent extends JPanel implements Runnable{
 	
 	public static final int screenCOL=16;	//Number of Collumns on screen
 	public static final int screenROW=24;	//Number of Rows on screen
 	public static final int tileSize=32;		//Size of tiles
+	public static final String version = "0.1V";
 	
 	private boolean debugMode=false;
 		
@@ -46,22 +49,26 @@ public class GameComponent extends JPanel implements Runnable{
 		
 		Map.draw(graphic);
 		player.draw(graphic);
+		
 		if(debugMode) {
 			graphic.setColor(Color.BLUE);
 			player.getChunk().drawRects(graphic);
 			graphic.setColor(Color.RED);
 			graphic.drawRect(player.getChunkAsPoint().getX()*tileSize, player.getChunkAsPoint().getY()*tileSize, tileSize, tileSize);
 		}
+		
 		graphic.dispose();
 	}
 	
 	//Thread do jogo
 	public void run() {
 		while(true) {
-			repaint();
-			
+			repaint();	
 			Toolkit.getDefaultToolkit().sync();
+			
 			player.update(Map);
+			
+			Map.update(player);
 			
 			try {
 				Thread.sleep(60);

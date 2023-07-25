@@ -6,7 +6,7 @@ public class Main extends JFrame{
 	private static final long serialVersionUID = 1L;
 	
 	public Main() {
-		this.setTitle("CLONE ZELDA");
+		this.setTitle("CLONE ZELDA -"+GameComponent.version);
 		this.setResizable(false);
 		
 		

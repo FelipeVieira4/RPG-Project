@@ -2,9 +2,8 @@ package game;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Toolkit;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 import world.LevelWorld;
 import javax.swing.JPanel;
@@ -12,12 +11,12 @@ import javax.swing.JPanel;
 import player.Player;
 import sound.Sound;
 
-public class GameComponent extends JPanel implements Runnable, KeyListener{
+public class GameComponent extends JPanel implements Runnable{
 	
-	public static final int screenCOL=16;	//Number of Collumns on screen
-	public static final int screenROW=24;	//Number of Rows on screen
+	public static final int screenCOL=16;		//Number of Collumns on screen
+	public static final int screenROW=24;		//Number of Rows on screen
 	public static final int tileSize=32;		//Size of tiles
-	public static final String version = "0.1V";
+	public static final String version = "0.1V";//Version of game
 	
 	private boolean debugMode=false;
 	private boolean paused=false;
@@ -28,7 +27,7 @@ public class GameComponent extends JPanel implements Runnable, KeyListener{
 	
 	private Player player = new Player(3,3);
 	private LevelWorld Map = new LevelWorld();
-	private Sound music = new Sound("rsc/orchestral_orchestral.wav");
+	private Sound music = new Sound("rsc/orchestral_orchestral.wav"); //Music of background
 	
 	public GameComponent() {
 		this.setBackground(new Color(127,148,41));
@@ -36,7 +35,7 @@ public class GameComponent extends JPanel implements Runnable, KeyListener{
 		
 		this.setFocusable(true);
 		this.addKeyListener(player);
-		this.addKeyListener(this);
+		this.addKeyListener(new KeyBoardSystem());
 		
 		gameThread=new Thread(this);
 		gameThread.start();
@@ -69,7 +68,8 @@ public class GameComponent extends JPanel implements Runnable, KeyListener{
 		while(true) {
 			repaint();	
 
-			music.play();
+			//music.play();
+			music.loop();
 			
 			if(!paused) {
 							
@@ -87,22 +87,13 @@ public class GameComponent extends JPanel implements Runnable, KeyListener{
 		
 		
 	}
-
-	@Override
-	public void keyReleased(KeyEvent arg0) {
+	
+	
+	private class KeyBoardSystem extends KeyAdapter {
 		
-		
-	}
-
-	@Override
-	public void keyPressed(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		if(arg0.getKeyCode() == KeyEvent.VK_1)paused = !paused;
-	}
-
-	@Override
-	public void keyTyped(KeyEvent arg0) {
-		// TODO Auto-generated method stub
+		public void keyReleased(KeyEvent arg0) {
+			if(arg0.getKeyCode() == KeyEvent.VK_1)paused = !paused;	
+		}
 		
 	}
 	

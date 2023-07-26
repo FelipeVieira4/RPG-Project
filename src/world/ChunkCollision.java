@@ -10,26 +10,33 @@ import game.GameComponent;
 public class ChunkCollision {
 	
 	private ArrayList<Vector2D> collisionPositions = new ArrayList<Vector2D>();
+	private int depth=0;
+	
+	public ChunkCollision(int depth) {
+		this.depth=depth;
+	}
+	
+	public ChunkCollision() {}
 	
 	public void getChunk(int posX,int posY,LevelWorld level) {
 		
-			collisionPositions.clear();//Clear the stack
-			
-			for(int xChunck = posX-1;xChunck<=posX+1;xChunck++) {
-				for(int yChunck = posY-1;yChunck <=posY+1;yChunck++) {
-					
-					if(level.getLevelImage().getRGB(xChunck, yChunck)!=LevelWorld.tileFree) {
-						collisionPositions.add(new Vector2D(xChunck,yChunck));
-					}
-					
+		collisionPositions.clear();//Clear the stack
+		
+		for(int xChunck = posX-1;xChunck<=posX+1;xChunck++) {
+			for(int yChunck = posY-1;yChunck <=posY+1;yChunck++) {
+				
+				if((level.getLevelImage().getRGB(xChunck, yChunck) & 0xff) != LevelWorld.ColorFree) {
+					collisionPositions.add(new Vector2D(xChunck,yChunck));
 				}
+				
+			}
 		}
 	}
 	
 	//Check if the rectangle on position(posx,posy) has collision with some rectangle of "rectsPosition"
 	public boolean hasCollision(int posx,int posy) {
 		
-		Rectangle entidyRec=new Rectangle(posx,posy,GameComponent.tileSize,GameComponent.tileSize);//Create a rectangle on posx,posy
+		Rectangle entidyRec=new Rectangle(posx,posy+depth,GameComponent.tileSize,GameComponent.tileSize-depth);//Create a rectangle on posx,posy
 		
 		
 		Rectangle recPos;

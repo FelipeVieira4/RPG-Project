@@ -16,9 +16,10 @@ import player.Player;
 public class LevelWorld {
 	
 	public static final int tileFree=-16777216;//Color ID for tile free
+	public static final int ColorFree=0;//The RED color of pixel
 	
-	private ArrayList<Vector2D> PointBlocks = new ArrayList<Vector2D>();
 	private ArrayList<Item> Items = new ArrayList<Item>();
+	private ArrayList<Tile> tileArray = new ArrayList<Tile>();
 	
 	private BufferedImage tileSheet;
 	private BufferedImage levelImage;
@@ -29,33 +30,36 @@ public class LevelWorld {
 		
 		try {
 			tileSheet = ImageIO.read(new File("rsc/tileSheet.png"));
-			levelImage = ImageIO.read(new File("rsc/level1_1.bmp"));
+			levelImage = ImageIO.read(new File("rsc/level1_1.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.exit(1);
 		}
 		
-		//System.out.println(levelImage.getRGB(1, 1));//Print the id of tile free
-		levelImage.setRGB(0, 2, -1);
 		
 		for(byte x=0;x<levelImage.getWidth();x++){
 			for(byte y=0;y<levelImage.getHeight();y++){
 				
 				if(levelImage.getRGB(x, y)!=tileFree) {
-					PointBlocks.add(new Vector2D(x*GameComponent.tileSize,y*GameComponent.tileSize));
+					
+					tileArray.add(new Tile(x,y,((levelImage.getRGB(x, y) & 0xff00) >> 8),0));
 				}
-			}
+				
+				
+				}
 		}
 		
 		
 	}
 	
 	public void draw(Graphics g1) {
-		for(Vector2D blockTile:PointBlocks) {
+		
+		for(Tile blockTile:tileArray) {
 			g1.drawImage(tileSheet, blockTile.getX(), blockTile.getY(),
 					blockTile.getX()+GameComponent.tileSize, blockTile.getY()+GameComponent.tileSize,
-					0, 0, 15,15, null);
+					blockTile.Xid*16, 0,(blockTile.Xid*16)+16,16, null);
+			//System.out.println(blockTile.getX()+" | "+blockTile.getY());
 		}
 		
 		for(Item item: Items) {
@@ -69,15 +73,8 @@ public class LevelWorld {
 			
 			Item item = Items.get(i);
 			
-			//Search for what kind of object it is
-			if(item instanceof HealthITem){
-				
-				//Update the Object and check if it can be delete
-				if(((HealthITem) item).update(p)) {
-					Items.remove(i);
-				}
-				
-				
+			if(item.update(p)) {
+				Items.remove(i);
 			}
 		}
 			

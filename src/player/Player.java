@@ -27,7 +27,7 @@ public class Player extends Entidy implements KeyListener{
 	private int xChunk,yChunk;	//Position of player on the chunk
 	private byte lifes=3;		//health of player
 	
-	private ChunkCollision collisionChunkMap = new ChunkCollision();
+	private ChunkCollision collisionChunkMap = new ChunkCollision(14);
 		
 	//movement variables
 	private boolean left,right,up,down;

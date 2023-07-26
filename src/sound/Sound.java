@@ -3,6 +3,7 @@ package sound;
 import java.io.File;
 import java.io.IOException;
 import javax.sound.sampled.*;
+import javax.swing.JOptionPane;
 
 public class Sound{
 
@@ -21,7 +22,8 @@ public class Sound{
 			
 			this.clip=pclip;
 		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "sound:"+patch+" dosen't found",null,JOptionPane.CLOSED_OPTION);
+			System.exit(-1);
 			return false;
 		}
 		
@@ -31,6 +33,10 @@ public class Sound{
 	
 	public void play() {
 		clip.start();
+	}
+	
+	public void loop() {
+		clip.loop(Clip.LOOP_CONTINUOUSLY);
 	}
 	
 	public void close() {

@@ -15,7 +15,7 @@ import player.Player;
 
 public class LevelWorld {
 	
-	public static final int tileFree=-16777216;//Color id for tile free
+	public static final int tileFree=-16777216;//Color ID for tile free
 	
 	private ArrayList<Vector2D> PointBlocks = new ArrayList<Vector2D>();
 	private ArrayList<Item> Items = new ArrayList<Item>();
@@ -25,7 +25,7 @@ public class LevelWorld {
 	
 	public LevelWorld() {
 		
-		Items.add(new HealthITem((byte)2,(byte)2));
+		Items.add(new HealthITem(2,2));
 		
 		try {
 			tileSheet = ImageIO.read(new File("rsc/tileSheet.png"));
@@ -58,8 +58,8 @@ public class LevelWorld {
 					0, 0, 15,15, null);
 		}
 		
-		for(Item i: Items) {
-			i.draw(g1);
+		for(Item item: Items) {
+			item.draw(g1);
 		}
 	}
 	
@@ -69,7 +69,10 @@ public class LevelWorld {
 			
 			Item item = Items.get(i);
 			
+			//Search for what kind of object it is
 			if(item instanceof HealthITem){
+				
+				//Update the Object and check if it can be delete
 				if(((HealthITem) item).update(p)) {
 					Items.remove(i);
 				}

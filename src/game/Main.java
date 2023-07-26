@@ -14,7 +14,8 @@ public class Main extends JFrame{
 		this.setSize(GameComponent.screenROW*GameComponent.tileSize,GameComponent.screenCOL*GameComponent.tileSize);
 		this.setLocation(300,100);
 		
-		this.add(new GameComponent());
+		GameComponent gameComponent = new GameComponent();
+		this.add(gameComponent);
 		
 		
 		this.setVisible(true);

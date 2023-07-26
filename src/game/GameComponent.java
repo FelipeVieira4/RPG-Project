@@ -3,13 +3,16 @@ package game;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import world.LevelWorld;
 import javax.swing.JPanel;
 
 import player.Player;
+import sound.Sound;
 
-public class GameComponent extends JPanel implements Runnable{
+public class GameComponent extends JPanel implements Runnable, KeyListener{
 	
 	public static final int screenCOL=16;	//Number of Collumns on screen
 	public static final int screenROW=24;	//Number of Rows on screen
@@ -17,23 +20,23 @@ public class GameComponent extends JPanel implements Runnable{
 	public static final String version = "0.1V";
 	
 	private boolean debugMode=false;
-		
+	private boolean paused=false;
+	
 	private static final long serialVersionUID = 1L;
 	private Thread gameThread;
 	
 	
-	private Player player = new Player((byte)3,(byte)3);
-	private LevelWorld Map= new LevelWorld();
+	private Player player = new Player(3,3);
+	private LevelWorld Map = new LevelWorld();
+	private Sound music = new Sound("rsc/orchestral_orchestral.wav");
 	
 	public GameComponent() {
-		this.setBackground(Color.GRAY);
+		this.setBackground(new Color(127,148,41));
 
 		
 		this.setFocusable(true);
-		super.setDoubleBuffered(true);
-		
-		
 		this.addKeyListener(player);
+		this.addKeyListener(this);
 		
 		gameThread=new Thread(this);
 		gameThread.start();
@@ -43,9 +46,6 @@ public class GameComponent extends JPanel implements Runnable{
 	//Função Paint do JPanel responsavel pela parte grafica do jogo
 	public void paintComponent(Graphics graphic) {
 		super.paintComponent(graphic);
-		
-		graphic.setColor(Color.BLACK);
-		graphic.fillRect(0, 0, 32, 32);
 		
 		Map.draw(graphic);
 		player.draw(graphic);
@@ -57,18 +57,26 @@ public class GameComponent extends JPanel implements Runnable{
 			graphic.drawRect(player.getChunkAsPoint().getX()*tileSize, player.getChunkAsPoint().getY()*tileSize, tileSize, tileSize);
 		}
 		
+		
+		super.setDoubleBuffered(true);
+		
 		graphic.dispose();
 	}
 	
 	//Thread do jogo
 	public void run() {
+		
 		while(true) {
 			repaint();	
-			Toolkit.getDefaultToolkit().sync();
+
+			music.play();
 			
-			player.update(Map);
-			
-			Map.update(player);
+			if(!paused) {
+							
+				player.update(Map);
+				Map.update(player);
+				
+			}
 			
 			try {
 				Thread.sleep(60);
@@ -77,6 +85,24 @@ public class GameComponent extends JPanel implements Runnable{
 			}
 		}
 		
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		if(arg0.getKeyCode() == KeyEvent.VK_1)paused = !paused;
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
 		
 	}
 	

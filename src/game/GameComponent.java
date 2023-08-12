@@ -8,36 +8,41 @@ import java.awt.event.KeyEvent;
 import world.LevelWorld;
 import javax.swing.JPanel;
 
+import entidy.Entidy;
 import player.Player;
-import sound.Sound;
 
 public class GameComponent extends JPanel implements Runnable{
 	
 	public static final int screenCOL=16;		//Number of Collumns on screen
 	public static final int screenROW=24;		//Number of Rows on screen
 	public static final int tileSize=32;		//Size of tiles
+	
 	public static final String version = "0.1V";//Version of game
 	
-	private boolean debugMode=false;
-	private boolean paused=false;
+	private volatile boolean debugMode=false;
+	private volatile boolean paused = false;
 	
 	private static final long serialVersionUID = 1L;
-	private Thread gameThread;
+	private Thread gameThread = new Thread(this);
 	
 	
 	private Player player = new Player(3,3);
 	private LevelWorld Map = new LevelWorld();
-	private Sound music = new Sound("rsc/orchestral_orchestral.wav"); //Music of background
+	
+	//private Sound music = new Sound("rsc/orchestral_orchestral.wav"); //Music of background
 	
 	public GameComponent() {
-		this.setBackground(new Color(127,148,41));
+		Color backgroundColor = new Color(127,148,41);
+		this.setBackground(backgroundColor);
 
 		
 		this.setFocusable(true);
 		this.addKeyListener(player);
 		this.addKeyListener(new KeyBoardSystem());
 		
-		gameThread=new Thread(this);
+		super.setDoubleBuffered(true);
+		
+		
 		gameThread.start();
 		
 	}
@@ -53,11 +58,11 @@ public class GameComponent extends JPanel implements Runnable{
 			graphic.setColor(Color.BLUE);
 			player.getChunk().drawRects(graphic);
 			graphic.setColor(Color.RED);
-			graphic.drawRect(player.getChunkAsPoint().getX()*tileSize, player.getChunkAsPoint().getY()*tileSize, tileSize, tileSize);
+			
+			Entidy playerChunck = player.getChunkAsEntidy();
+			graphic.drawRect(playerChunck.getX(), playerChunck.getY(), tileSize, tileSize);
+		
 		}
-		
-		
-		super.setDoubleBuffered(true);
 		
 		graphic.dispose();
 	}
@@ -66,10 +71,11 @@ public class GameComponent extends JPanel implements Runnable{
 	public void run() {
 		
 		while(true) {
-			repaint();	
+			
 
 			//music.play();
-			music.loop();
+			//music.loop();
+			
 			
 			if(!paused) {
 							
@@ -78,6 +84,7 @@ public class GameComponent extends JPanel implements Runnable{
 				
 			}
 			
+			repaint();	
 			try {
 				Thread.sleep(60);
 			}catch(Exception io) {
@@ -92,9 +99,9 @@ public class GameComponent extends JPanel implements Runnable{
 	private class KeyBoardSystem extends KeyAdapter {
 		
 		public void keyReleased(KeyEvent arg0) {
-			if(arg0.getKeyCode() == KeyEvent.VK_1)paused = !paused;	
+			if(arg0.getKeyCode() == KeyEvent.VK_1)paused = !paused;
 		}
 		
 	}
-	
+
 }

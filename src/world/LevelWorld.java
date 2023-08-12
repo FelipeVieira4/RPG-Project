@@ -23,7 +23,7 @@ public class LevelWorld {
 	
 	private BufferedImage tileSheet;
 	private BufferedImage levelImage;
-	
+
 	public LevelWorld() {
 		
 		Items.add(new HealthITem(2,2));
@@ -45,9 +45,8 @@ public class LevelWorld {
 					
 					tileArray.add(new Tile(x,y,((levelImage.getRGB(x, y) & 0xff00) >> 8),0));
 				}
-				
-				
-				}
+								
+			}
 		}
 		
 		
@@ -59,12 +58,12 @@ public class LevelWorld {
 			g1.drawImage(tileSheet, blockTile.getX(), blockTile.getY(),
 					blockTile.getX()+GameComponent.tileSize, blockTile.getY()+GameComponent.tileSize,
 					blockTile.Xid*16, 0,(blockTile.Xid*16)+16,16, null);
-			//System.out.println(blockTile.getX()+" | "+blockTile.getY());
 		}
 		
 		for(Item item: Items) {
 			item.draw(g1);
 		}
+		
 	}
 	
 	public void update(Player p) {

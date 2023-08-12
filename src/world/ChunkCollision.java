@@ -5,11 +5,12 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
+import entidy.Entidy;
 import game.GameComponent;
 
 public class ChunkCollision {
 	
-	private ArrayList<Vector2D> collisionPositions = new ArrayList<Vector2D>();
+	private ArrayList<Entidy> collisionPositions = new ArrayList<Entidy>();
 	private int depth=0;
 	
 	public ChunkCollision(int depth) {
@@ -26,7 +27,7 @@ public class ChunkCollision {
 			for(int yChunck = posY-1;yChunck <=posY+1;yChunck++) {
 				
 				if((level.getLevelImage().getRGB(xChunck, yChunck) & 0xff) != LevelWorld.ColorFree) {
-					collisionPositions.add(new Vector2D(xChunck,yChunck));
+					collisionPositions.add(new Entidy(xChunck,yChunck));
 				}
 				
 			}
@@ -40,10 +41,9 @@ public class ChunkCollision {
 		
 		
 		Rectangle recPos;
-		for(Vector2D vector : collisionPositions) {
+		for(Entidy vector : collisionPositions) {
 			
-			recPos=new Rectangle(vector.getX()*GameComponent.tileSize,vector.getY()*GameComponent.tileSize,
-								GameComponent.tileSize,GameComponent.tileSize);
+			recPos=new Rectangle(vector.getX(),vector.getY(),GameComponent.tileSize,GameComponent.tileSize);
 			
 			if(recPos.intersects(entidyRec))return true;//Check if have collision between recs
 		}
@@ -53,8 +53,8 @@ public class ChunkCollision {
 	
 	//Method for debug mode
 	public void drawRects(Graphics g1) {
-		for(Vector2D x : collisionPositions) {
-			g1.drawRect(x.getX()*GameComponent.tileSize, x.getY()*GameComponent.tileSize,GameComponent.tileSize,GameComponent.tileSize);
+		for(Entidy x : collisionPositions) {
+			g1.drawRect(x.getX(), x.getY(),GameComponent.tileSize,GameComponent.tileSize);
 		}
 		
 	}

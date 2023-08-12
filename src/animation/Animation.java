@@ -18,10 +18,7 @@ public class Animation{
 	private String state;
 	
 	private int currentFrame=0;
-	private byte TimerFrame;		//Time to charge the frame
-	
-	private Integer scaleX,scaleY;
-	
+	private int TimerFrame=0;		//Time to charge the frame
 	
 	//Uses the size of Tile 32 pixels by default
 	public Animation(String imagePatch) {
@@ -31,25 +28,8 @@ public class Animation{
 			JOptionPane.showConfirmDialog(null, "FILE DOSEN'T FOUND:"+imagePatch, null, JOptionPane.OK_OPTION);
 			System.exit(-1);
 		}
-		TimerFrame=0;
 	}
-	
-	//Uses the size scaleX and scaleY by default
-	public Animation(String imagePatch,int pscaleX,int pscaleY) {
-		try {
-			sheetImage=ImageIO.read(new File(imagePatch));
-		}catch(Exception io) {
-			JOptionPane.showConfirmDialog(null, "FILE DOSEN'T FOUND:"+imagePatch, null, JOptionPane.OK_OPTION);
-			System.exit(-1);
-		}
-		
-		TimerFrame=0;
-		
-		scaleX=pscaleX;
-		scaleY=pscaleY;
-		
-	}
-	
+
 	public void addAnimation(String type,AnimationStage anim) {
 		animSystem.put(type, anim);
 	}
@@ -70,31 +50,31 @@ public class Animation{
 	}
 	
 	
-	public void nextFrame() {
+	public boolean nextFrame() {
 
 		if(this.currentFrame < this.currentAnimation.getEnd()) {
 			this.currentFrame++;	//Goto next frame
-			return;
+			return true;
 		}
 			
 		currentFrame=currentAnimation.getStart(); //Restart animation
-		return;
+		return false;
 	}
+
 	
 	public void TimerFrame(int Timer) {
 
 		TimerFrame++;
-		if(TimerFrame >= Timer) {
-			
-			if(this.currentFrame < this.currentAnimation.getEnd()) {
-				this.currentFrame++;
-				TimerFrame=0;
 				
+		if(TimerFrame > Timer) {
+			TimerFrame=0;
+			
+			if(currentFrame < currentAnimation.getEnd()) {
+				currentFrame++;
 				return;
 			}
 			
 			currentFrame=currentAnimation.getStart(); //Reset animation
-			TimerFrame=0;
 		}
 		
 		return;
@@ -106,10 +86,11 @@ public class Animation{
 
 	
 	public BufferedImage getImage() {
-		
-		if(scaleX == null && scaleY == null) {
-			return sheetImage.getSubimage(currentFrame*GameComponent.tileSize, currentAnimation.getPosSheet()*GameComponent.tileSize, GameComponent.tileSize,GameComponent.tileSize);
-		}
+		return sheetImage.getSubimage(currentFrame*GameComponent.tileSize, currentAnimation.getPosSheet()*GameComponent.tileSize, GameComponent.tileSize,GameComponent.tileSize);
+	}
+	
+	
+	public BufferedImage getImage(int scaleX,int scaleY) {
 		return sheetImage.getSubimage(currentFrame*scaleX, currentAnimation.getPosSheet()*scaleY, scaleX,scaleY);
 	}
 }

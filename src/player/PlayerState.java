@@ -1,5 +1,5 @@
 package player;
 
 public enum PlayerState {
-	walk,attack,deadAnim,dead;
+	idle,walk,attack,deadAnim,dead;
 }

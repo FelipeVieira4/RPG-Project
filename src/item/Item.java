@@ -10,7 +10,7 @@ import player.Player;
 
 public class Item extends GameObject{
 	
-	private Animation itemAnim;
+	private Animation animSystem;
 
 	private int animScaleX=GameComponent.tileSize,animScaleY=GameComponent.tileSize;
 	
@@ -18,9 +18,9 @@ public class Item extends GameObject{
 	public Item(int posX,int posY,String patchSheet,int animScaleX,int animScaleY,int lastFrame) {
 		super(posX,posY);
 
-		itemAnim = new Animation(patchSheet);
-		itemAnim.addAnimation("anim", 0, lastFrame, 0);
-		itemAnim.setAnimation("anim");
+		animSystem = new Animation(patchSheet);
+		animSystem.addAnimation("anim-default", 0, lastFrame, 0);
+		animSystem.setAnimation("anim-default");
 		
 		this.animScaleX=animScaleX;
 		this.animScaleY=animScaleY;
@@ -29,26 +29,21 @@ public class Item extends GameObject{
 	public Item(int posX,int posY,String patchSheet,int lastFrame) {
 		super(posX,posY);
 
-		itemAnim = new Animation(patchSheet);
-		itemAnim.addAnimation("anim", 0, lastFrame, 0);
-		itemAnim.setAnimation("anim");
+		animSystem = new Animation(patchSheet);
+		animSystem.addAnimation("anim-default", 0, lastFrame, 0);
+		animSystem.setAnimation("anim-default");
 	}
 	
 	public void draw(Graphics g) {
 		
-		BufferedImage itemImage = itemAnim.getImage(animScaleX,animScaleY);// Get image from animation
+		BufferedImage itemImage = animSystem.getImage(animScaleX,animScaleY);// Get image from animation
 		g.drawImage(itemImage,this.getX(),this.getY(), this.getX()+GameComponent.tileSize/3,this.getY()+GameComponent.tileSize/2,0,0, itemImage.getWidth(), itemImage.getHeight(), null);
 	}
 	
 	//Update frame
 	public void updateFrame(int time) {
-		itemAnim.TimerFrame(time);
+		animSystem.TimerFrame(time);
 	}
 
-	public void update(){
-		updateFrame(10);
-		return;
-	}
-
-	public boolean CanUse(Player p){return false;}
+	public boolean CanPlayerUse(Player p){return false;}// if player colide with this player will use
 }

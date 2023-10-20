@@ -20,9 +20,11 @@ import world.ChunkCollision;
 import world.LevelWorld;
 
 
-
 public class Player extends Entidy implements KeyListener{
 	
+	private enum Direction {UP,DOWN,LEFT,RIGHT}
+	private enum PlayerState {idle,walk,attack,deadAnim,dead;}
+
 	private BufferedImage healthIcon;	//I need move it to another file
 
 	private byte speed=GameComponent.tileSize/8;		//variable of velocity

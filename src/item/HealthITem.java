@@ -9,12 +9,11 @@ public class HealthITem extends Item{
 	private static final int sizeHeight=15;
 	
 	public HealthITem(int x, int y) {
-		
 		super(x,y,"rsc/item_health.png",sizeWidht,sizeHeight,numberFrames);
 	}
 	
 	
-	public boolean CanUse(Player p){
+	public boolean CanPlayerUse(Player p){
 		if(this.hasCollision(p)) {
 			p.addLife();
 			return true;

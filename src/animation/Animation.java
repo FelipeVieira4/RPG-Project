@@ -18,7 +18,7 @@ public class Animation{
 	private String state;
 	
 	private int currentFrame=0;
-	private int TimerFrame=0;		//Time to charge the frame
+	private int timerFrame=0;		//Time to charge the frame
 	
 	//Uses the size of Tile 32 pixels by default
 	public Animation(String imagePatch) {
@@ -30,12 +30,12 @@ public class Animation{
 		}
 	}
 
-	public void addAnimation(String type,AnimationStage anim) {
-		animSystem.put(type, anim);
+	public void addAnimation(String nameAnimation,AnimationStage anim) {
+		animSystem.put(nameAnimation, anim);
 	}
 	
-	public void addAnimation( String type, int start, int end, int pos) {
-		animSystem.put(type,new AnimationStage(start, end, pos));
+	public void addAnimation( String nameAnimation, int startFrame, int endFrame, int posY) {
+		animSystem.put(nameAnimation,new AnimationStage(startFrame, endFrame, posY));
 	}
 	
 	
@@ -64,10 +64,10 @@ public class Animation{
 	
 	public void TimerFrame(int Timer) {
 
-		TimerFrame++;
+		timerFrame++;
 				
-		if(TimerFrame > Timer) {
-			TimerFrame=0;
+		if(timerFrame > Timer) {
+			timerFrame=0;
 			
 			if(currentFrame < currentAnimation.getEnd()) {
 				currentFrame++;

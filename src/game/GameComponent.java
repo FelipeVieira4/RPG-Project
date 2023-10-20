@@ -20,7 +20,7 @@ public class GameComponent extends JPanel implements Runnable{
 	public static final int screenROW=24;		//Number of Rows on screen
 	public static final int tileSize=32;		//Size of tiles
 	
-	public static final String version = "0.1V";//Version of game
+	public static final String version = "0.2V";//Version of game
 	
 	private volatile boolean debugMode=false;
 	private volatile boolean paused = false;
@@ -55,9 +55,11 @@ public class GameComponent extends JPanel implements Runnable{
 	public void paintComponent(Graphics graphic) {
 		super.paintComponent(graphic);
 		
+		
+		Map.draw(graphic);
+
 		for(Item item: ItemList)item.draw(graphic);
 
-		Map.draw(graphic);
 		player.draw(graphic);
 		
 		
@@ -91,14 +93,14 @@ public class GameComponent extends JPanel implements Runnable{
 				player.update(Map);
 				
 				for(int i=ItemList.size()-1 ; i>=0; i--){
-					if(ItemList.get(i).CanUse(player)){
+					if(ItemList.get(i).CanPlayerUse(player)){
 						ItemList.remove(i);
 
 					}else{
-						ItemList.get(i).update();
+						ItemList.get(i).updateFrame(10);
 					}
 				}
-				
+
 			}
 			
 			repaint();	

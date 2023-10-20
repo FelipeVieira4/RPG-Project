@@ -22,7 +22,7 @@ public class Sound{
 			
 			this.clip=pclip;
 		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-			JOptionPane.showMessageDialog(null, "sound:"+patch+" dosen't found",null,JOptionPane.CLOSED_OPTION);
+			JOptionPane.showMessageDialog(null, "sound:"+patch+" dosen't found or format not surpported",null,JOptionPane.CLOSED_OPTION);
 			System.exit(-1);
 			return false;
 		}

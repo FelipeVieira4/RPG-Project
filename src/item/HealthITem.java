@@ -13,16 +13,12 @@ public class HealthITem extends Item{
 		super(x,y,"rsc/item_health.png",sizeWidht,sizeHeight,numberFrames);
 	}
 	
-	//This method is type boolean because if it returns true, it will be deleted
-	public boolean update(Player p) {
-		super.updateFrame(10);
-		
+	
+	public boolean CanUse(Player p){
 		if(this.hasCollision(p)) {
 			p.addLife();
 			return true;
 		}
-		
 		return false;
 	}
-	
 }

@@ -4,11 +4,14 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 import world.LevelWorld;
 import javax.swing.JPanel;
 
 import entidy.Entidy;
+import item.HealthITem;
+import item.Item;
 import player.Player;
 
 public class GameComponent extends JPanel implements Runnable{
@@ -28,13 +31,14 @@ public class GameComponent extends JPanel implements Runnable{
 	
 	private Player player = new Player(3,3);
 	private LevelWorld Map = new LevelWorld();
+	private ArrayList<Item> ItemList = new ArrayList<Item>();
 	
 	//private Sound music = new Sound("rsc/orchestral_orchestral.wav"); //Music of background
 	
 	public GameComponent() {
 		Color backgroundColor = new Color(127,148,41);
 		this.setBackground(backgroundColor);
-
+		ItemList.add(new HealthITem(2, 2));
 		
 		this.setFocusable(true);
 		this.addKeyListener(player);
@@ -51,8 +55,11 @@ public class GameComponent extends JPanel implements Runnable{
 	public void paintComponent(Graphics graphic) {
 		super.paintComponent(graphic);
 		
+		for(Item item: ItemList)item.draw(graphic);
+
 		Map.draw(graphic);
 		player.draw(graphic);
+		
 		
 		if(debugMode) {
 			graphic.setColor(Color.BLUE);
@@ -61,8 +68,10 @@ public class GameComponent extends JPanel implements Runnable{
 			
 			Entidy playerChunck = player.getChunkAsEntidy();
 			graphic.drawRect(playerChunck.getX(), playerChunck.getY(), tileSize, tileSize);
+		}	
 		
-		}
+
+
 		
 		graphic.dispose();
 	}
@@ -80,7 +89,15 @@ public class GameComponent extends JPanel implements Runnable{
 			if(!paused) {
 							
 				player.update(Map);
-				Map.update(player);
+				
+				for(int i=ItemList.size()-1 ; i>=0; i--){
+					if(ItemList.get(i).CanUse(player)){
+						ItemList.remove(i);
+
+					}else{
+						ItemList.get(i).update();
+					}
+				}
 				
 			}
 			

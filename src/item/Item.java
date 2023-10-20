@@ -4,15 +4,17 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import animation.Animation;
-import entidy.Entidy;
+import entidy.GameObject;
 import game.GameComponent;
 import player.Player;
 
-public class Item extends Entidy{
+public class Item extends GameObject{
 	
 	private Animation itemAnim;
+
 	private int animScaleX=GameComponent.tileSize,animScaleY=GameComponent.tileSize;
 	
+
 	public Item(int posX,int posY,String patchSheet,int animScaleX,int animScaleY,int lastFrame) {
 		super(posX,posY);
 
@@ -42,6 +44,11 @@ public class Item extends Entidy{
 	public void updateFrame(int time) {
 		itemAnim.TimerFrame(time);
 	}
-	
-	public boolean update(Player p) {return true;}
+
+	public void update(){
+		updateFrame(10);
+		return;
+	}
+
+	public boolean CanUse(Player p){return false;}
 }

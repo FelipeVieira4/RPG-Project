@@ -5,14 +5,15 @@ import javax.swing.JFrame;
 
 public class Main extends JFrame{
 	private static final long serialVersionUID = 1L;
-	
+	private static final int screenWidht = GameComponent.screenROW*GameComponent.tileSize;
+	private static final	int screenHeight = GameComponent.screenCOL*GameComponent.tileSize;
+
 	public Main() {
-		this.setTitle("CLONE ZELDA -"+GameComponent.version);
+		this.setTitle("RPG PROJECT -"+GameComponent.version);
 		
 		
 		
-		int screenWidht = GameComponent.screenROW*GameComponent.tileSize;
-		int screenHeight = GameComponent.screenCOL*GameComponent.tileSize;
+
 		
 		this.setSize(screenWidht,screenHeight);
 		this.setLocation(300,100);

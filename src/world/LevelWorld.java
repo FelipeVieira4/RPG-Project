@@ -32,7 +32,6 @@ public class LevelWorld {
 			tileSheet = ImageIO.read(new File("rsc/tileSheet.png"));
 			levelImage = ImageIO.read(new File("rsc/level1_1.png"));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.exit(1);
 		}
@@ -54,12 +53,15 @@ public class LevelWorld {
 	
 	public void draw(Graphics g1) {
 		
+		//Draw the tiles of map on screen
 		for(Tile blockTile:tileArray) {
 			g1.drawImage(tileSheet, blockTile.getX(), blockTile.getY(),
 					blockTile.getX()+GameComponent.tileSize, blockTile.getY()+GameComponent.tileSize,
 					blockTile.Xid*16, 0,(blockTile.Xid*16)+16,16, null);
 		}
 		
+
+		//Draw itens on screen
 		for(Item item: Items) {
 			item.draw(g1);
 		}

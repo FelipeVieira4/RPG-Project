@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import world.LevelWorld;
 import javax.swing.JPanel;
 
-import entidy.Entidy;
 import item.HealthITem;
 import item.Item;
 import player.Player;
@@ -22,7 +21,6 @@ public class GameComponent extends JPanel implements Runnable{
 	
 	public static final String version = "0.2V";//Version of game
 	
-	private volatile boolean debugMode=false;
 	private volatile boolean paused = false;
 	
 	private static final long serialVersionUID = 1L;
@@ -62,18 +60,6 @@ public class GameComponent extends JPanel implements Runnable{
 
 		player.draw(graphic);
 		
-		
-		if(debugMode) {
-			graphic.setColor(Color.BLUE);
-			player.getChunk().drawRects(graphic);
-			graphic.setColor(Color.RED);
-			
-			Entidy playerChunck = player.getChunkAsEntidy();
-			graphic.drawRect(playerChunck.getX(), playerChunck.getY(), tileSize, tileSize);
-		}	
-		
-
-
 		
 		graphic.dispose();
 	}

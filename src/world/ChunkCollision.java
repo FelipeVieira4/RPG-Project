@@ -51,11 +51,4 @@ public class ChunkCollision {
 		return false;
 	}
 	
-	//Method for debug mode
-	public void drawRects(Graphics g1) {
-		for(Entidy x : collisionPositions) {
-			g1.drawRect(x.getX(), x.getY(),GameComponent.tileSize,GameComponent.tileSize);
-		}
-		
-	}
 }

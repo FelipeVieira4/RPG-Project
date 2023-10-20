@@ -25,13 +25,16 @@ public class Player extends Entidy implements KeyListener{
 	private enum Direction {UP,DOWN,LEFT,RIGHT}
 	private enum PlayerState {idle,walk,attack,deadAnim,dead;}
 
+
+
 	private BufferedImage healthIcon;	//I need move it to another file
 
 	private byte speed=GameComponent.tileSize/8;		//variable of velocity
 	private int xChunk,yChunk;	//Position of player on the chunk
 	private byte lifes=3;		//health of player
 	
-	private Direction dir=Direction.DOWN;Direction oldDir = dir;
+	private Direction dir=Direction.DOWN,oldDir = dir;
+
 	private PlayerState state = PlayerState.walk;
 	
 	private ChunkCollision collisionChunkMap;

@@ -6,8 +6,8 @@ public class Tile extends Entidy{
 
 	public int Xid,Yid;
 	
-	public Tile( int x, int y,int xid, int yid) {
-		super(x,y);
+	public Tile( int posX, int posY,int xid, int yid) {
+		super(posX,posY);
 		
 		this.Xid = xid;
 		this.Yid = yid;

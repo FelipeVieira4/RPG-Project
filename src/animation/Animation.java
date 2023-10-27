@@ -37,6 +37,10 @@ public class Animation{
 	public void addAnimation( String nameAnimation, int startFrame, int endFrame, int posY) {
 		animSystem.put(nameAnimation,new AnimationStage(startFrame, endFrame, posY));
 	}
+
+	public void addAnimation( String nameAnimation, int numberFrames, int posY) {
+		animSystem.put(nameAnimation,new AnimationStage(0, numberFrames, posY));
+	}
 	
 	
 	public void setAnimation(String type) {

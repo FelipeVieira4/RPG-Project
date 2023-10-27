@@ -29,7 +29,7 @@ public class Player extends Entidy implements KeyListener{
 
 	private BufferedImage healthIcon;	//I need move it to another file
 
-	private byte speed=GameComponent.tileSize/8;		//variable of velocity
+	private byte speed=GameComponent.tileSize/8;	//variable of velocity
 	private int xChunk,yChunk;	//Position of player on the chunk
 	private byte lifes=3;		//health of player
 	
@@ -51,6 +51,7 @@ public class Player extends Entidy implements KeyListener{
 		
 		AnimationPlayer = new Animation("rsc/link_sheet.png");
 		
+		//Get the animations on link_sheet.png
 		AnimationPlayer.addAnimation("DOWN",new AnimationStage(0, 1, 0));
 		AnimationPlayer.addAnimation("LEFT",new AnimationStage(0, 1, 1));
 		AnimationPlayer.addAnimation("RIGHT",new AnimationStage(0, 1, 1));
@@ -142,9 +143,9 @@ public class Player extends Entidy implements KeyListener{
 				dir=Direction.RIGHT;
 			}
 			
-			if(oldX!=this.getX() || oldY!=this.getY()) {
-				return true;
-			}
+
+			return (oldX!=this.getX() || oldY!=this.getY()); //return if player charged of chunck
+
 		}
 		
 		

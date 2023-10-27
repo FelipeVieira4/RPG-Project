@@ -19,7 +19,7 @@ public class Item extends GameObject{
 		super(posX,posY);
 
 		animSystem = new Animation(patchSheet);
-		animSystem.addAnimation("anim-default", 0, lastFrame, 0);
+		animSystem.addAnimation("anim-default", lastFrame, 0);
 		animSystem.setAnimation("anim-default");
 		
 		this.animScaleX=animScaleX;
@@ -30,7 +30,7 @@ public class Item extends GameObject{
 		super(posX,posY);
 
 		animSystem = new Animation(patchSheet);
-		animSystem.addAnimation("anim-default", 0, lastFrame, 0);
+		animSystem.addAnimation("anim-default", lastFrame, 0);
 		animSystem.setAnimation("anim-default");
 	}
 	
@@ -45,5 +45,5 @@ public class Item extends GameObject{
 		animSystem.TimerFrame(time);
 	}
 
-	public boolean CanPlayerUse(Player p){return false;}// if player colide with this player will use
+	public boolean PlayerUse(Player p){return false;}// if player colide with this player will use
 }

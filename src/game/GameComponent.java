@@ -79,7 +79,7 @@ public class GameComponent extends JPanel implements Runnable{
 				player.update(Map);
 				
 				for(int i=ItemList.size()-1 ; i>=0; i--){
-					if(ItemList.get(i).CanPlayerUse(player)){
+					if(ItemList.get(i).PlayerUse(player)){
 						ItemList.remove(i);
 
 					}else{

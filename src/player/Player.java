@@ -33,8 +33,7 @@ public class Player extends Entidy implements KeyListener{
 	private int xChunk,yChunk;	//Position of player on the chunk
 	private byte lifes=3;		//health of player
 	
-	private Direction dir=Direction.DOWN,oldDir = dir;
-
+	private Direction dir=Direction.DOWN,	oldDir = dir;
 	private PlayerState state = PlayerState.walk;
 	
 	private ChunkCollision collisionChunkMap;
@@ -63,7 +62,7 @@ public class Player extends Entidy implements KeyListener{
 		try {
 			healthIcon=ImageIO.read(new File("rsc/health_icon.png"));
 		}catch(Exception io) {
-			JOptionPane.showMessageDialog(null,"ERRO TO LOAD SOME SPRITE FROM PLAYER SYSTEM","ERRO 0x01",JOptionPane.CLOSED_OPTION);
+			JOptionPane.showMessageDialog(null,"ERRO TO LOAD SPRITE FROM PLAYER SYSTEM","ERRO 0x01",JOptionPane.CLOSED_OPTION);
 			System.exit(-1);
 		}
 	}

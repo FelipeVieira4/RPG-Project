@@ -24,7 +24,7 @@ public class ChunkCollision {
 		for(int xChunck = posX-1;xChunck<=posX+1;xChunck++) {
 			for(int yChunck = posY-1;yChunck <=posY+1;yChunck++) {
 				
-				if((level.getLevelImage().getRGB(xChunck, yChunck) & 0xff) != LevelWorld.ColorFree) {
+				if((level.getLevelImage().getRGB(xChunck, yChunck) & 0xff) != LevelWorld.colorTileFree) {
 					collisionPositions.add(new Entidy(xChunck,yChunck));
 				}
 				
@@ -40,7 +40,6 @@ public class ChunkCollision {
 		
 		Rectangle recPos;
 		for(Entidy vector : collisionPositions) {
-			
 			recPos=new Rectangle(vector.getX(),vector.getY(),GameComponent.tileSize,GameComponent.tileSize);
 			
 			if(recPos.intersects(entidyRec))return true;//Check if have collision between recs

@@ -34,10 +34,10 @@ public class Item extends GameObject{
 		animSystem.setAnimation("anim-default");
 	}
 	
-	public void draw(Graphics g) {
+	public void draw(Graphics graphic) {
 		
 		BufferedImage itemImage = animSystem.getImage(animScaleX,animScaleY);// Get image from animation
-		g.drawImage(itemImage,this.getX(),this.getY(), this.getX()+GameComponent.tileSize/3,this.getY()+GameComponent.tileSize/2,0,0, itemImage.getWidth(), itemImage.getHeight(), null);
+		graphic.drawImage(itemImage,this.getX(),this.getY(), this.getX()+GameComponent.tileSize/3,this.getY()+GameComponent.tileSize/2,0,0, itemImage.getWidth(), itemImage.getHeight(), null);
 	}
 	
 	//Update frame

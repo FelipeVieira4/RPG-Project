@@ -9,6 +9,5 @@ public abstract class GameObject extends Entidy{
 	}
 
   public void update(){return;}
-  public void draw(Graphics graphic){return;}
-  public boolean remove(){return true;}
+  public abstract void draw(Graphics graphic);
 }

@@ -1,6 +1,6 @@
 package world;
 
-import java.awt.Rectangle;
+import java.awt.*;
 import java.util.ArrayList;
 
 import entidy.Entidy;
@@ -47,5 +47,26 @@ public class ChunkCollision {
 		
 		return false;
 	}
-	
+
+    public boolean hasCollision(int posx,int posy,int widht,int height) {
+
+        Rectangle entidyRec=new Rectangle(posx,posy+depth,widht,height);//Create a rectangle on posx,posy
+
+
+        Rectangle recPos;
+        for(Entidy vector : collisionPositions) {
+            recPos=new Rectangle(vector.getX(),vector.getY(),GameComponent.tileSize,GameComponent.tileSize);
+
+            if(recPos.intersects(entidyRec))return true;//Check if have collision between recs
+        }
+
+        return false;
+    }
+
+    public void drawDebugCollsion(Graphics g1){
+        for(Entidy blockTile:collisionPositions) {
+            g1.setColor(Color.ORANGE);
+            g1.drawRect(blockTile.getX(), blockTile.getY(), blockTile.getWidht(), blockTile.getHeight());
+        }
+    }
 }

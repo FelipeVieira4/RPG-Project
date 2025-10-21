@@ -1,5 +1,6 @@
 package item;
 
+import game.GameComponent;
 import player.Player;
 
 public class HealthITem extends Item{
@@ -10,7 +11,7 @@ public class HealthITem extends Item{
 	
 	//Carregar o 
 	public HealthITem(int x, int y) {
-		super(x,y,"rsc/item_health.png",sizeWidht,sizeHeight,numberFrames);
+		super(x,y,"rsc/item_health.png",sizeWidht,sizeHeight,numberFrames,sizeWidht,sizeHeight, GameComponent.tileSize/3,GameComponent.tileSize/2);
 	}
 	
 	

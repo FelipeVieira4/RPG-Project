@@ -6,9 +6,11 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
+import item.TuxCollect;
 import sound.Sound;
 import world.LevelWorld;
-import javax.swing.JPanel;
+
+import javax.swing.*;
 
 import item.HealthITem;
 import item.Item;
@@ -20,31 +22,36 @@ public class GameComponent extends JPanel implements Runnable{
 	public static final int screenROW=24;		//Number of Rows on screen
 	public static final int tileSize=32;		//Size of tiles
 	
-	public static final String version = "0.2V";//Version of game
+	public static final String version = "0.3V IN DEV";//Version of game
 	
 	private volatile boolean paused = false;
-	
+    private boolean keepRunning=true;
+
 	private static final long serialVersionUID = 1L;
 	private Thread gameThread = new Thread(this);
-	
+
+    private boolean debugMode=true;
 	
 	private Player player = new Player(3,3);
 	private LevelWorld Map = new LevelWorld();
 	private ArrayList<Item> ItemList = new ArrayList<Item>();
 	
 	private Sound music = new Sound("rsc/orchestral_orchestral.wav"); //Music of background
-	
-	public GameComponent() {
+
+    private JFrame jFrame;
+
+	public GameComponent(JFrame jFrame) {
 		Color backgroundColor = new Color(127,148,41);
 		this.setBackground(backgroundColor);
 		ItemList.add(new HealthITem(2, 2));
-		
+        ItemList.add(new TuxCollect(7, 3));
+
 		this.setFocusable(true);
 		this.addKeyListener(player);
 		this.addKeyListener(new KeyBoardSystem());
 		
 		super.setDoubleBuffered(true);
-		
+		this.jFrame=jFrame;
 		
 		gameThread.start();
 		
@@ -55,12 +62,23 @@ public class GameComponent extends JPanel implements Runnable{
 		super.paintComponent(graphic);
 		
 		
-		Map.draw(graphic);
+		Map.draw(graphic,this.debugMode);
 
-		for(Item item: ItemList)item.draw(graphic);
+		for(Item item: ItemList){
+            if (this.debugMode) {
+                graphic.setColor(Color.BLUE);
+                graphic.drawRect(item.getX(), item.getY(), item.getWidht(), item.getHeight());
+            }
+            item.draw(graphic);
+        }
 
 		player.draw(graphic);
-		
+        if (this.debugMode) {
+            graphic.setColor(Color.RED);
+            graphic.drawRect(player.getX(), player.getY(), player.getWidht(), player.getHeight());
+
+            player.getChunk().drawDebugCollsion(graphic);
+        }
 		
 		graphic.dispose();
 	}
@@ -68,11 +86,11 @@ public class GameComponent extends JPanel implements Runnable{
 	//Thread do jogo
 	public void run() {
 		
-		while(true) {
+		while(keepRunning) {
 			
 
-			music.play();
-			music.loop();
+			//music.play();
+			//music.loop();
 			
 			
 			if(!paused) {
@@ -82,7 +100,6 @@ public class GameComponent extends JPanel implements Runnable{
 				for(int i=ItemList.size()-1 ; i>=0; i--){
 					if(ItemList.get(i).PlayerUse(player)){
 						ItemList.remove(i);
-
 					}else{
 						ItemList.get(i).updateFrame(10);
 					}
@@ -103,11 +120,13 @@ public class GameComponent extends JPanel implements Runnable{
 	
 	
 	private class KeyBoardSystem extends KeyAdapter {
-		
 		public void keyReleased(KeyEvent arg0) {
 			if(arg0.getKeyCode() == KeyEvent.VK_1)paused = !paused;
 		}
-		
 	}
 
+    public void shouldClose(){
+        this.keepRunning=!this.keepRunning;
+        this.jFrame.dispose();
+    }
 }

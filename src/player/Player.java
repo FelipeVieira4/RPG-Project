@@ -25,7 +25,7 @@ public class Player extends Entidy implements KeyListener{
 	private enum Direction {UP,DOWN,LEFT,RIGHT}
 	private enum PlayerState {idle,walk,attack,deadAnim,dead;}
 
-
+    private int tux_collected=0;
 
 	private BufferedImage healthIcon;	//I need move it to another file
 
@@ -67,8 +67,6 @@ public class Player extends Entidy implements KeyListener{
 		}
 	}
 	public void draw(Graphics g) {
-		
-		
 		BufferedImage linkTexture = AnimationPlayer.getImage(15,16);//Get image from animation system
 		
 		//Invert the image of player if it is left
@@ -118,7 +116,7 @@ public class Player extends Entidy implements KeyListener{
 	}
 	
 	private boolean movement(LevelWorld map) {
-		
+		System.out.println(this.tux_collected);
 		int oldX=this.getX(),oldY=this.getY();
 		oldDir = dir;
 		
@@ -183,5 +181,11 @@ public class Player extends Entidy implements KeyListener{
 	public Entidy getChunkAsEntidy() {
 		return new Entidy(xChunk,yChunk);
 	}
-	
+
+    public void addTuxCollected(){
+        this.tux_collected++;
+    }
+    public void resetTuxCollected(){
+        this.tux_collected=0;
+    }
 }

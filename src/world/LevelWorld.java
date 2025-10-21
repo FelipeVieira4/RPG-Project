@@ -1,6 +1,6 @@
 package world;
 
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -43,16 +43,20 @@ public class LevelWorld {
 		
 		
 	}
-	
-	public void draw(Graphics g1) {
+
+	public void draw(Graphics g1,boolean debugMode) {
 
 		//Draw the tiles of map on screen
 		for(Tile blockTile:tileArray) {
 			g1.drawImage(tileSheet, blockTile.getX(), blockTile.getY(),
 				blockTile.getX()+GameComponent.tileSize, blockTile.getY()+GameComponent.tileSize,
 				blockTile.Xid*16, 0,(blockTile.Xid*16)+16,16, null);
-			}
-		}
+            if (debugMode){
+                g1.setColor(Color.CYAN);
+                g1.drawRect(blockTile.getX(), blockTile.getY(), blockTile.getWidht(), blockTile.getHeight());
+            }
+        }
+    }
 	
 	public BufferedImage getLevelImage() {
 		return this.levelImage;

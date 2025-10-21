@@ -1,4 +1,4 @@
-package particles;
+package menu;
 
 import game.GameComponent;
 

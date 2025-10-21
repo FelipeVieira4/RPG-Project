@@ -1,4 +1,11 @@
 package particles;
 
-public class Particles {
+import entidy.Entidy;
+
+public class Particles extends Entidy{
+    public Particles(int posx, int posy) {
+        super(posx, posy);
+    }
+
+
 }

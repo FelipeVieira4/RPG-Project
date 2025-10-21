@@ -1,9 +1,9 @@
-\bin
-\doc
-\src\module-info.java
-\.settings
+/bin
+/doc
+/src/module-info.java
+/.settings
 .project
 .classpath
 src/module-info.java
-\.idea
-\out
+/.idea
+/out

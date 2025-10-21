@@ -6,4 +6,4 @@
 .classpath
 src/module-info.java
 \.idea
-\.out
+\out

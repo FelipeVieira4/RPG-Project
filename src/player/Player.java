@@ -99,7 +99,7 @@ public class Player extends Entidy implements KeyListener{
 			yChunk=Math.round((this.getY()+(GameComponent.tileSize/2))/GameComponent.tileSize);
 			
 			//if charged the positions of collisionChunk,update the collisionChunk
-			if(xChunk!=oldxChunk || yChunk!=oldyChunk)collisionChunkMap.getChunk(xChunk, yChunk, map);
+			if(xChunk!=oldxChunk || yChunk!=oldyChunk) collisionChunkMap.getChunk(xChunk, yChunk, map);
 			
 			
 			if(oldDir != dir) {
@@ -122,29 +122,25 @@ public class Player extends Entidy implements KeyListener{
 		int oldX=this.getX(),oldY=this.getY();
 		oldDir = dir;
 		
-		if(state == PlayerState.walk) {	
-			if(isKeyPressed(KeyEvent.VK_UP) && !collisionChunkMap.hasCollision(this.getX(), this.getY()-speed)) {
-				this.addForceY(-speed);
-				dir=Direction.UP;
-			}
-			if(isKeyPressed(KeyEvent.VK_DOWN) && !collisionChunkMap.hasCollision(this.getX(), this.getY()+speed)) {
-				this.addForceY(speed);
-				dir=Direction.DOWN;
-			}
-			
-			
-			if(isKeyPressed(KeyEvent.VK_LEFT) && !collisionChunkMap.hasCollision(this.getX()-speed,this.getY())) {
-				this.addForceX(-speed);
-				dir=Direction.LEFT;
-			}
-			if(isKeyPressed(KeyEvent.VK_RIGHT) && !collisionChunkMap.hasCollision(this.getX()+speed,this.getY())) {
-				this.addForceX(speed);
-				dir=Direction.RIGHT;
-			}
+		if(state == PlayerState.walk) {
+            if (isKeyPressed(KeyEvent.VK_UP) && !collisionChunkMap.hasCollision(this.getX(), this.getY() - speed)) {
+                this.addForceY(-speed);
+                dir = Direction.UP;
+            } else if (isKeyPressed(KeyEvent.VK_DOWN) && !collisionChunkMap.hasCollision(this.getX(), this.getY() + speed)) {
+                this.addForceY(speed);
+                dir = Direction.DOWN;
+            }
+
+            if (isKeyPressed(KeyEvent.VK_LEFT) && !collisionChunkMap.hasCollision(this.getX() - speed, this.getY())) {
+                this.addForceX(-speed);
+                dir = Direction.LEFT;
+            } else if (isKeyPressed(KeyEvent.VK_RIGHT) && !collisionChunkMap.hasCollision(this.getX() + speed, this.getY())) {
+                this.addForceX(speed);
+                dir = Direction.RIGHT;
+            }
 			
 
 			return (oldX!=this.getX() || oldY!=this.getY()); //return if player charged of chunck
-
 		}
 		
 		

@@ -6,6 +6,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
+import sound.Sound;
 import world.LevelWorld;
 import javax.swing.JPanel;
 
@@ -31,7 +32,7 @@ public class GameComponent extends JPanel implements Runnable{
 	private LevelWorld Map = new LevelWorld();
 	private ArrayList<Item> ItemList = new ArrayList<Item>();
 	
-	//private Sound music = new Sound("rsc/orchestral_orchestral.wav"); //Music of background
+	private Sound music = new Sound("rsc/orchestral_orchestral.wav"); //Music of background
 	
 	public GameComponent() {
 		Color backgroundColor = new Color(127,148,41);
@@ -70,8 +71,8 @@ public class GameComponent extends JPanel implements Runnable{
 		while(true) {
 			
 
-			//music.play();
-			//music.loop();
+			music.play();
+			music.loop();
 			
 			
 			if(!paused) {

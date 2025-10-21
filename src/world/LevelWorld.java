@@ -16,11 +16,12 @@ public class LevelWorld {
 	public static final int colorTileFree=0;//The RED color of pixel
 	
 	private ArrayList<Tile> tileArray = new ArrayList<Tile>();
-	
+
 	private BufferedImage tileSheet;	//The texture of tiles
 	private BufferedImage levelImage;	//The base of map
 
-	public LevelWorld() {
+
+    public LevelWorld() {
 		try {
 			tileSheet = ImageIO.read(new File("rsc/tileSheet.png"));
 			levelImage = ImageIO.read(new File("rsc/level1_1.png"));

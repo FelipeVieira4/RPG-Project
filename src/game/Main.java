@@ -10,24 +10,14 @@ public class Main extends JFrame{
 
 	public Main() {
 		this.setTitle("RPG PROJECT -"+GameComponent.version);
-		
-		
-		
 
-		
 		this.setSize(screenWidht,screenHeight);
 		this.setLocation(300,100);
 		this.setResizable(false);
-		
-		
-		
-		
+
 		GameComponent gameComponent = new GameComponent();
 		this.add(gameComponent);
 
-		
-		
-		
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		

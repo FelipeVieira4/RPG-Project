@@ -1,93 +1,115 @@
 package ia;
 
-import entidy.Entidy;
-import world.ChunkCollision;
-import world.LevelWorld;
+import entity.Entity;
 import game.GameComponent;
+import world.LevelWorld;
 
 import java.util.*;
 
 public class PathFinder {
+
     private LevelWorld world;
-    private ChunkCollision collision;
 
     public PathFinder(LevelWorld world) {
         this.world = world;
-        this.collision = new ChunkCollision();
     }
 
-    public List<Entidy> findPath(Entidy start, Entidy goal) {
+    public static class TileNode {
+        public final int x, y;
+        public TileNode(int x, int y) { this.x = x; this.y = y; }
+    }
+
+    private static class PathNode implements Comparable<PathNode> {
+        int x, y;
+        PathNode parent;
+        int gCost, hCost;
+
+        public PathNode(int x, int y, PathNode parent, int gCost, int hCost) {
+            this.x = x; this.y = y;
+            this.parent = parent;
+            this.gCost = gCost;
+            this.hCost = hCost;
+        }
+
+        public int fCost() { return gCost + hCost; }
+
+        @Override
+        public int compareTo(PathNode o) { return Integer.compare(this.fCost(), o.fCost()); }
+
+        @Override
+        public boolean equals(Object obj) {
+            if(!(obj instanceof PathNode)) return false;
+            PathNode o = (PathNode)obj;
+            return x == o.x && y == o.y;
+        }
+
+        @Override
+        public int hashCode() { return Objects.hash(x, y); }
+    }
+
+    public List<TileNode> findPath(Entity start, Entity goal) {
         int startX = start.getX() / GameComponent.tileSize;
         int startY = start.getY() / GameComponent.tileSize;
         int goalX = goal.getX() / GameComponent.tileSize;
         int goalY = goal.getY() / GameComponent.tileSize;
 
         PriorityQueue<PathNode> openList = new PriorityQueue<>();
-        HashSet<PathNode> closedList = new HashSet<>();
+        Set<PathNode> closedList = new HashSet<>();
 
-        PathNode startNode = new PathNode(startX, startY, null, 0, heuristic(startX, startY, goalX, goalY));
-        openList.add(startNode);
+        openList.add(new PathNode(startX, startY, null, 0, heuristic(startX, startY, goalX, goalY)));
 
-        while (!openList.isEmpty()) {
+        while(!openList.isEmpty()) {
             PathNode current = openList.poll();
-            if (current.x == goalX && current.y == goalY)
-                return buildPath(current);
+
+            if(current.x == goalX && current.y == goalY) return buildPath(current);
 
             closedList.add(current);
 
-            for (int[] neighbor : getNeighbors(current.x, current.y)) {
-                int nx = neighbor[0];
-                int ny = neighbor[1];
+            for(int[] neighbor : getNeighbors(current.x, current.y)) {
+                int nx = neighbor[0], ny = neighbor[1];
+                if(isBlocked(nx, ny) || closedList.contains(new PathNode(nx, ny, null,0,0))) continue;
 
-                // ignora posições inválidas ou bloqueadas
-                if (isBlocked(nx, ny) || contains(closedList, nx, ny)) continue;
+                int g = current.gCost + 1;
+                PathNode node = new PathNode(nx, ny, current, g, heuristic(nx, ny, goalX, goalY));
 
-                int gCost = current.gCost + 1;
-                PathNode neighborNode = new PathNode(nx, ny, current, gCost, heuristic(nx, ny, goalX, goalY));
+                boolean skip = false;
+                for(PathNode n : openList)
+                    if(n.equals(node) && n.fCost() <= node.fCost()) { skip = true; break; }
 
-                // evita duplicar nós já presentes com custo menor
-                Optional<PathNode> existing = openList.stream()
-                        .filter(n -> n.equals(neighborNode) && n.fCost() <= neighborNode.fCost())
-                        .findFirst();
-
-                if (existing.isEmpty()) openList.add(neighborNode);
+                if(!skip) openList.add(node);
             }
         }
 
-        return Collections.emptyList(); // nenhum caminho
+        return Collections.emptyList();
     }
 
-    private boolean isBlocked(int tileX, int tileY) {
-        return (world.getLevelImage().getRGB(tileX, tileY) & 0xff) != LevelWorld.colorTileFree;
+    private boolean isBlocked(int x, int y) {
+        if(x < 0 || y < 0 || x >= world.getLevelImage().getWidth() || y >= world.getLevelImage().getHeight()) return true;
+        return (world.getLevelImage().getRGB(x, y) & 0xff) != LevelWorld.colorTileFree;
     }
 
     private int heuristic(int x1, int y1, int x2, int y2) {
-        // distância Manhattan (boa pra movimento em grid 4-direcional)
-        return Math.abs(x1 - x2) + Math.abs(y1 - y2);
-    }
-
-    private boolean contains(Set<PathNode> set, int x, int y) {
-        return set.stream().anyMatch(n -> n.x == x && n.y == y);
-    }
-
-    private List<Entidy> buildPath(PathNode goalNode) {
-        LinkedList<Entidy> path = new LinkedList<>();
-        PathNode current = goalNode;
-
-        while (current != null) {
-            path.addFirst(new Entidy(current.x, current.y));
-            current = current.parent;
-        }
-
-        return path;
+        int dx = x1 - x2;
+        int dy = y1 - y2;
+        return (int)Math.sqrt(dx*dx + dy*dy);
     }
 
     private List<int[]> getNeighbors(int x, int y) {
-        List<int[]> list = new ArrayList<>();
-        list.add(new int[]{x + 1, y});
-        list.add(new int[]{x - 1, y});
-        list.add(new int[]{x, y + 1});
-        list.add(new int[]{x, y - 1});
-        return list;
+        return Arrays.asList(
+                new int[]{x+1,y},
+                new int[]{x-1,y},
+                new int[]{x,y+1},
+                new int[]{x,y-1}
+        );
+    }
+
+    private List<TileNode> buildPath(PathNode goal) {
+        LinkedList<TileNode> path = new LinkedList<>();
+        PathNode current = goal;
+        while(current != null) {
+            path.addFirst(new TileNode(current.x, current.y));
+            current = current.parent;
+        }
+        return path;
     }
 }

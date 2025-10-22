@@ -1,31 +1,31 @@
-package entidy;
+package entity;
 
 import java.awt.Rectangle;
 
 import game.GameComponent;
 
-public class Entidy {
+public class Entity {
 	private int x,y;
-    private int widht=GameComponent.tileSize;
+    private int width=GameComponent.tileSize;
     private int height=GameComponent.tileSize;
 	
-	public Entidy( int posx, int posy) {
+	public Entity(int posx, int posy) {
 		this.x=posx*GameComponent.tileSize;
 		this.y=posy*GameComponent.tileSize;
 
 	}
 
-    public Entidy( int posx, int posy, int widht, int height) {
+    public Entity(int posx, int posy, int width, int height) {
         this.x=posx*GameComponent.tileSize;
         this.y=posy*GameComponent.tileSize;
 
-        this.widht=widht;
+        this.width=width;
         this.height=height;
     }
 	
-	public boolean hasCollision(Entidy e2) {
-		if (new Rectangle(this.x,this.y,this.widht,this.height).intersects
-				(new Rectangle(e2.getX(),e2.getY(),e2.getWidht(),e2.getHeight())))return true;
+	public boolean hasCollision(Entity e2) {
+		if (new Rectangle(this.x,this.y,this.width,this.height).intersects
+				(new Rectangle(e2.getX(),e2.getY(),e2.getWidth(),e2.getHeight())))return true;
 		return false;
 	}
 	
@@ -56,8 +56,8 @@ public class Entidy {
 		return this.y;
 	}
 
-    public int getWidht(){
-        return this.widht;
+    public int getWidth(){
+        return this.width;
     }
 
     public int getHeight(){

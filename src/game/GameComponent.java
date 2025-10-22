@@ -6,7 +6,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
-import ia.Npc;
+import ia.Enemy;
 import item.TuxCollect;
 import sound.Sound;
 import world.LevelWorld;
@@ -37,7 +37,7 @@ public class GameComponent extends JPanel implements Runnable{
 	private LevelWorld Map = new LevelWorld();
 	private ArrayList<Item> ItemList = new ArrayList<Item>();
 
-    private ArrayList<Npc> npcList = new ArrayList<>();
+    private ArrayList<Enemy> npcList = new ArrayList<>();
 
 	private Sound music = new Sound("rsc/orchestral_orchestral.wav"); //Music of background
 
@@ -49,7 +49,7 @@ public class GameComponent extends JPanel implements Runnable{
 		ItemList.add(new HealthITem(2, 2));
         ItemList.add(new TuxCollect(7, 3));
 
-        Npc npc = new Npc(9, 6, this.Map);
+        Enemy npc = new Enemy(9, 6, this.Map);
         npc.setTarget(player);
         npcList.add(npc);
 
@@ -74,7 +74,7 @@ public class GameComponent extends JPanel implements Runnable{
 		for(Item item: ItemList){
             if (this.debugMode) {
                 graphic.setColor(Color.BLUE);
-                graphic.drawRect(item.getX(), item.getY(), item.getWidht(), item.getHeight());
+                graphic.drawRect(item.getX(), item.getY(), item.getWidth(), item.getHeight());
             }
             item.draw(graphic);
         }
@@ -82,13 +82,13 @@ public class GameComponent extends JPanel implements Runnable{
 		player.draw(graphic);
         if (this.debugMode) {
             graphic.setColor(Color.RED);
-            graphic.drawRect(player.getX(), player.getY(), player.getWidht(), player.getHeight());
+            graphic.drawRect(player.getX(), player.getY(), player.getWidth(), player.getHeight());
 
             player.getChunk().drawDebugCollsion(graphic);
         }
-		for (Npc npc:npcList){
+		for (Enemy npc:npcList){
             graphic.setColor(Color.BLUE);
-            graphic.drawRect(npc.getX(),npc.getY(),npc.getWidht(),npc.getHeight());
+            graphic.drawRect(npc.getX(),npc.getY(),npc.getWidth(),npc.getHeight());
         }
 
 
@@ -117,7 +117,7 @@ public class GameComponent extends JPanel implements Runnable{
 					}
 				}
 
-                for(Npc npc: npcList){
+                for(Enemy npc: npcList){
                     npc.update();
                 }
 

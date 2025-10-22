@@ -14,13 +14,13 @@ import javax.swing.JOptionPane;
 
 import animation.Animation;
 import animation.AnimationStage;
-import entidy.Entidy;
+import entity.Entity;
 import game.GameComponent;
 import world.ChunkCollision;
 import world.LevelWorld;
 
 
-public class Player extends Entidy implements KeyListener{
+public class Player extends Entity implements KeyListener{
 	
 	private enum Direction {UP,DOWN,LEFT,RIGHT}
 	private enum PlayerState {idle,walk,attack,deadAnim,dead;}
@@ -88,8 +88,6 @@ public class Player extends Entidy implements KeyListener{
 	
 	public void update(LevelWorld map) {
 
-		
-		
 		if(movement(map)) {//If player moved, update the ChunkCollision system
 			int oldxChunk=xChunk,oldyChunk=yChunk;
 			
@@ -178,8 +176,8 @@ public class Player extends Entidy implements KeyListener{
 		return this.collisionChunkMap;
 	}
 	
-	public Entidy getChunkAsEntidy() {
-		return new Entidy(xChunk,yChunk);
+	public Entity getChunkAsEntidy() {
+		return new Entity(xChunk,yChunk);
 	}
 
     public void addTuxCollected(){

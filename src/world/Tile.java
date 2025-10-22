@@ -1,8 +1,8 @@
 package world;
 
-import entidy.Entidy;
+import entity.Entity;
 
-public class Tile extends Entidy{
+public class Tile extends Entity {
 
 	public int Xid,Yid;
 	

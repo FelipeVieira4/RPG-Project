@@ -53,7 +53,7 @@ public class LevelWorld {
 				blockTile.Xid*16, 0,(blockTile.Xid*16)+16,16, null);
             if (debugMode){
                 g1.setColor(Color.CYAN);
-                g1.drawRect(blockTile.getX(), blockTile.getY(), blockTile.getWidht(), blockTile.getHeight());
+                g1.drawRect(blockTile.getX(), blockTile.getY(), blockTile.getWidth(), blockTile.getHeight());
             }
         }
     }

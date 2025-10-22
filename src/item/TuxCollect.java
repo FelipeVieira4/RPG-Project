@@ -4,7 +4,7 @@ import player.Player;
 
 public class TuxCollect extends Item{
     private static final int numberFrames=0;
-    private static final int sizeWidht=32;
+    private static final int sizeWidth=32;
     private static final int sizeHeight=32;
 
     public TuxCollect(int x, int y) {

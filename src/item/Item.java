@@ -4,7 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import animation.Animation;
-import entidy.GameObject;
+import entity.GameObject;
 import game.GameComponent;
 import player.Player;
 
@@ -14,8 +14,8 @@ public class Item extends GameObject{
 
 	private int animScaleX=GameComponent.tileSize,animScaleY=GameComponent.tileSize;
 
-	public Item(int posX,int posY,String patchSheet,int animScaleX,int animScaleY,int lastFrame,int widht,int height) {
-		super(posX, posY, widht, height);
+	public Item(int posX,int posY,String patchSheet,int animScaleX,int animScaleY,int lastFrame,int width,int height) {
+		super(posX, posY, width, height);
 
 		animSystem = new Animation(patchSheet);
 		animSystem.addAnimation("anim-default", lastFrame, 0);
@@ -26,8 +26,8 @@ public class Item extends GameObject{
 
 	}
 
-    public Item(int posX,int posY,String patchSheet,int animScaleX,int animScaleY,int lastFrame,int widht,int height, int size_x, int size_y) {
-        super(posX, posY, widht, height);
+    public Item(int posX,int posY,String patchSheet,int animScaleX,int animScaleY,int lastFrame,int width,int height, int size_x, int size_y) {
+        super(posX, posY, width, height);
 
         animSystem = new Animation(patchSheet);
         animSystem.addAnimation("anim-default", lastFrame, 0);
@@ -49,7 +49,7 @@ public class Item extends GameObject{
 	public void draw(Graphics graphic) {
 		
 		BufferedImage itemImage = animSystem.getImage(animScaleX,animScaleY);// Get image from animation
-		graphic.drawImage(itemImage,this.getX(),this.getY(), this.getX()+this.getWidht(),this.getY()+this.getHeight(),0,0, itemImage.getWidth(), itemImage.getHeight(), null);
+		graphic.drawImage(itemImage,this.getX(),this.getY(), this.getX()+this.getWidth(),this.getY()+this.getHeight(),0,0, itemImage.getWidth(), itemImage.getHeight(), null);
 	}
 	
 	//Update frame

@@ -3,12 +3,12 @@
     import java.awt.*;
     import java.util.ArrayList;
 
-    import entidy.Entidy;
+    import entity.Entity;
     import game.GameComponent;
 
     public class ChunkCollision {
 
-        private ArrayList<Entidy> collisionPositions = new ArrayList<Entidy>();
+        private ArrayList<Entity> collisionPositions = new ArrayList<Entity>();
         private int depth=0;
 
         public ChunkCollision(int depth) {
@@ -25,7 +25,7 @@
                 for(int yChunck = posY-1;yChunck <=posY+1;yChunck++) {
 
                     if((level.getLevelImage().getRGB(xChunck, yChunck) & 0xff) != LevelWorld.colorTileFree) {
-                        collisionPositions.add(new Entidy(xChunck,yChunck));
+                        collisionPositions.add(new Entity(xChunck,yChunck));
                     }
 
                 }
@@ -39,7 +39,7 @@
 
 
             Rectangle recPos;
-            for(Entidy vector : collisionPositions) {
+            for(Entity vector : collisionPositions) {
                 recPos=new Rectangle(vector.getX(),vector.getY(),GameComponent.tileSize,GameComponent.tileSize);
 
                 if(recPos.intersects(entidyRec))return true;//Check if have collision between recs
@@ -48,13 +48,13 @@
             return false;
         }
 
-        public boolean hasCollision(int posx,int posy,int widht,int height) {
+        public boolean hasCollision(int posx,int posy,int width,int height) {
 
-            Rectangle entidyRec=new Rectangle(posx,posy+depth,widht,height);//Create a rectangle on posx,posy
+            Rectangle entidyRec=new Rectangle(posx,posy+depth,width,height);//Create a rectangle on posx,posy
 
 
             Rectangle recPos;
-            for(Entidy vector : collisionPositions) {
+            for(Entity vector : collisionPositions) {
                 recPos=new Rectangle(vector.getX(),vector.getY(),GameComponent.tileSize,GameComponent.tileSize);
 
                 if(recPos.intersects(entidyRec))return true;//Check if have collision between recs
@@ -64,9 +64,9 @@
         }
 
         public void drawDebugCollsion(Graphics g1){
-            for(Entidy blockTile:collisionPositions) {
+            for(Entity blockTile:collisionPositions) {
                 g1.setColor(Color.ORANGE);
-                g1.drawRect(blockTile.getX(), blockTile.getY(), blockTile.getWidht(), blockTile.getHeight());
+                g1.drawRect(blockTile.getX(), blockTile.getY(), blockTile.getWidth(), blockTile.getHeight());
             }
         }
     }

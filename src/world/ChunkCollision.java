@@ -1,72 +1,72 @@
-package world;
+    package world;
 
-import java.awt.*;
-import java.util.ArrayList;
+    import java.awt.*;
+    import java.util.ArrayList;
 
-import entidy.Entidy;
-import game.GameComponent;
+    import entidy.Entidy;
+    import game.GameComponent;
 
-public class ChunkCollision {
-	
-	private ArrayList<Entidy> collisionPositions = new ArrayList<Entidy>();
-	private int depth=0;
-	
-	public ChunkCollision(int depth) {
-		this.depth=depth;
-	}
-	
-	public ChunkCollision() {}
-	
-	public void getChunk(int posX,int posY,LevelWorld level) {
-		
-		collisionPositions.clear();//Clear the stack
-		
-		for(int xChunck = posX-1;xChunck<=posX+1;xChunck++) {
-			for(int yChunck = posY-1;yChunck <=posY+1;yChunck++) {
-				
-				if((level.getLevelImage().getRGB(xChunck, yChunck) & 0xff) != LevelWorld.colorTileFree) {
-					collisionPositions.add(new Entidy(xChunck,yChunck));
-				}
-				
-			}
-		}
-	}
-	
-	//Check if the rectangle on position(posx,posy) has collision with some rectangle of "rectsPosition"
-	public boolean hasCollision(int posx,int posy) {
-		
-		Rectangle entidyRec=new Rectangle(posx,posy+depth,GameComponent.tileSize,GameComponent.tileSize-depth);//Create a rectangle on posx,posy
-		
-		
-		Rectangle recPos;
-		for(Entidy vector : collisionPositions) {
-			recPos=new Rectangle(vector.getX(),vector.getY(),GameComponent.tileSize,GameComponent.tileSize);
-			
-			if(recPos.intersects(entidyRec))return true;//Check if have collision between recs
-		}
-		
-		return false;
-	}
+    public class ChunkCollision {
 
-    public boolean hasCollision(int posx,int posy,int widht,int height) {
+        private ArrayList<Entidy> collisionPositions = new ArrayList<Entidy>();
+        private int depth=0;
 
-        Rectangle entidyRec=new Rectangle(posx,posy+depth,widht,height);//Create a rectangle on posx,posy
-
-
-        Rectangle recPos;
-        for(Entidy vector : collisionPositions) {
-            recPos=new Rectangle(vector.getX(),vector.getY(),GameComponent.tileSize,GameComponent.tileSize);
-
-            if(recPos.intersects(entidyRec))return true;//Check if have collision between recs
+        public ChunkCollision(int depth) {
+            this.depth=depth;
         }
 
-        return false;
-    }
+        public ChunkCollision() {}
 
-    public void drawDebugCollsion(Graphics g1){
-        for(Entidy blockTile:collisionPositions) {
-            g1.setColor(Color.ORANGE);
-            g1.drawRect(blockTile.getX(), blockTile.getY(), blockTile.getWidht(), blockTile.getHeight());
+        public void getChunk(int posX,int posY,LevelWorld level) {
+
+            collisionPositions.clear();//Clear the stack
+
+            for(int xChunck = posX-1;xChunck<=posX+1;xChunck++) {
+                for(int yChunck = posY-1;yChunck <=posY+1;yChunck++) {
+
+                    if((level.getLevelImage().getRGB(xChunck, yChunck) & 0xff) != LevelWorld.colorTileFree) {
+                        collisionPositions.add(new Entidy(xChunck,yChunck));
+                    }
+
+                }
+            }
+        }
+
+        //Check if the rectangle on position(posx,posy) has collision with some rectangle of "rectsPosition"
+        public boolean hasCollision(int posx,int posy) {
+
+            Rectangle entidyRec=new Rectangle(posx,posy+depth,GameComponent.tileSize,GameComponent.tileSize-depth);//Create a rectangle on posx,posy
+
+
+            Rectangle recPos;
+            for(Entidy vector : collisionPositions) {
+                recPos=new Rectangle(vector.getX(),vector.getY(),GameComponent.tileSize,GameComponent.tileSize);
+
+                if(recPos.intersects(entidyRec))return true;//Check if have collision between recs
+            }
+
+            return false;
+        }
+
+        public boolean hasCollision(int posx,int posy,int widht,int height) {
+
+            Rectangle entidyRec=new Rectangle(posx,posy+depth,widht,height);//Create a rectangle on posx,posy
+
+
+            Rectangle recPos;
+            for(Entidy vector : collisionPositions) {
+                recPos=new Rectangle(vector.getX(),vector.getY(),GameComponent.tileSize,GameComponent.tileSize);
+
+                if(recPos.intersects(entidyRec))return true;//Check if have collision between recs
+            }
+
+            return false;
+        }
+
+        public void drawDebugCollsion(Graphics g1){
+            for(Entidy blockTile:collisionPositions) {
+                g1.setColor(Color.ORANGE);
+                g1.drawRect(blockTile.getX(), blockTile.getY(), blockTile.getWidht(), blockTile.getHeight());
+            }
         }
     }
-}

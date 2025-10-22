@@ -6,6 +6,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
+import ia.Npc;
 import item.TuxCollect;
 import sound.Sound;
 import world.LevelWorld;
@@ -35,7 +36,9 @@ public class GameComponent extends JPanel implements Runnable{
 	private Player player = new Player(3,3);
 	private LevelWorld Map = new LevelWorld();
 	private ArrayList<Item> ItemList = new ArrayList<Item>();
-	
+
+    private ArrayList<Npc> npcList = new ArrayList<>();
+
 	private Sound music = new Sound("rsc/orchestral_orchestral.wav"); //Music of background
 
     private JFrame jFrame;
@@ -45,6 +48,10 @@ public class GameComponent extends JPanel implements Runnable{
 		this.setBackground(backgroundColor);
 		ItemList.add(new HealthITem(2, 2));
         ItemList.add(new TuxCollect(7, 3));
+
+        Npc npc = new Npc(9, 6, this.Map);
+        npc.setTarget(player);
+        npcList.add(npc);
 
 		this.setFocusable(true);
 		this.addKeyListener(player);
@@ -79,7 +86,12 @@ public class GameComponent extends JPanel implements Runnable{
 
             player.getChunk().drawDebugCollsion(graphic);
         }
-		
+		for (Npc npc:npcList){
+            graphic.setColor(Color.BLUE);
+            graphic.drawRect(npc.getX(),npc.getY(),npc.getWidht(),npc.getHeight());
+        }
+
+
 		graphic.dispose();
 	}
 	
@@ -94,7 +106,7 @@ public class GameComponent extends JPanel implements Runnable{
 			
 			
 			if(!paused) {
-							
+
 				player.update(Map);
 				
 				for(int i=ItemList.size()-1 ; i>=0; i--){
@@ -104,6 +116,10 @@ public class GameComponent extends JPanel implements Runnable{
 						ItemList.get(i).updateFrame(10);
 					}
 				}
+
+                for(Npc npc: npcList){
+                    npc.update();
+                }
 
 			}
 			

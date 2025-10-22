@@ -24,12 +24,18 @@ public class LevelWorld {
     public LevelWorld() {
 		try {
 			tileSheet = ImageIO.read(new File("rsc/tileSheet.png"));
-			levelImage = ImageIO.read(new File("rsc/level1_1.png"));
+			final String leveImagesPath = "rsc/levelImages";
+			File levelImagesFolder = new File(leveImagesPath);
+			File[] levelImageFiles = levelImagesFolder.listFiles();
+			if (levelImageFiles == null) {
+				throw new NullPointerException("Level images not found at " + leveImagesPath);
+			}
+			final int randomIndex = (int) Math.floor(Math.random() * levelImageFiles.length);
+			levelImage = ImageIO.read(levelImageFiles[randomIndex]);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
-		
 		
 		for(byte x=0;x<levelImage.getWidth();x++){
 			for(byte y=0;y<levelImage.getHeight();y++){
@@ -44,7 +50,7 @@ public class LevelWorld {
 		
 	}
 
-	public void draw(Graphics g1,boolean debugMode) {
+	public void draw(Graphics g1, boolean debugMode) {
 
 		//Draw the tiles of map on screen
 		for(Tile blockTile:tileArray) {
